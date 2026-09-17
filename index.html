@@ -405,7 +405,12 @@
 				</form>
 				<button type="button" id="mostrarRegistro" class="secondary">Crear inicio de sesión</button>
 				<form id="registroForm" class="hidden formulario-pequeno">
-					<h2>Crear cuenta de estudiante</h2>
+					<h2>Crear cuenta</h2>
+					<label for="registroRol">Tipo de cuenta</label>
+					<select id="registroRol" required>
+						<option value="estudiante">Estudiante</option>
+						<option value="profesor">Profesor</option>
+					</select>
 					<label for="registroUsuario">Usuario</label><input id="registroUsuario" required autocomplete="username">
 					<label for="registroNombre">Nombre completo</label><input id="registroNombre" required>
 					<label for="registroClave">Contraseña</label><input id="registroClave" type="password" minlength="4" required autocomplete="new-password">
@@ -1032,19 +1037,23 @@
 		$('mostrarRegistro').addEventListener('click', () => { $('registroForm').classList.toggle('hidden'); $('registroMensaje').textContent = ''; });
 		$('registroForm').addEventListener('submit', e => {
 			e.preventDefault();
+			const rol = $('registroRol').value;
 			const usuario = normalizarTexto($('registroUsuario').value);
 			const nombre = $('registroNombre').value.trim();
 			const clave = $('registroClave').value.trim();
 			if (!usuario || !nombre || !clave) return $('registroMensaje').textContent = 'Completa todos los campos.';
 			if (usuarios.some(u => normalizarTexto(u.usuario) === usuario) || estudiantesEliminados.includes(usuario)) return $('registroMensaje').textContent = 'Ese usuario no está disponible.';
-			const estudiante = { usuario, clave, nombre, rol:'estudiante' };
-			usuarios.push(estudiante);
-			const extras = JSON.parse(localStorage.getItem('estudiantesExtra') || '[]');
-			extras.push(estudiante);
-			localStorage.setItem('estudiantesExtra', JSON.stringify(extras));
-			monedas[usuario] = 0;
-			guardarEconomia();
-			$('registroMensaje').textContent = 'Cuenta creada. Ya puedes iniciar sesión.';
+			const cuenta = { usuario, clave, nombre, rol };
+			usuarios.push(cuenta);
+			const claveStorage = rol === 'profesor' ? 'profesoresExtra' : 'estudiantesExtra';
+			const cuentasExtra = leerJSON(claveStorage, []);
+			cuentasExtra.push(cuenta);
+			localStorage.setItem(claveStorage, JSON.stringify(cuentasExtra));
+			if (rol === 'estudiante') {
+				monedas[usuario] = {};
+				guardarEconomia();
+			}
+			$('registroMensaje').textContent = `Cuenta de ${rol} creada. Ya puedes iniciar sesión.`;
 			$('registroForm').reset();
 		});
 		$('notaForm').addEventListener('submit', e => { e.preventDefault(); const u = usuarios.find(x => x.usuario === $('alumno').value); calificaciones.push({ usuario:u.usuario, nombre:u.nombre, materia:$('materia').value.trim(), nota:$('nota').value }); localStorage.setItem('calificaciones', JSON.stringify(calificaciones)); $('notaMensaje').textContent = 'Calificación guardada.'; $('materia').value = ''; $('nota').value = ''; renderProfesor(); renderResumenAdmin(); });
