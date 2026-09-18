@@ -72,6 +72,11 @@
 		.top-app-nav { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
 		.top-app-nav button { width:auto; margin:0; padding:8px 11px; border-radius:8px; background:rgba(255,255,255,0.12); color:#fff; font-size:.84rem; }
 		.top-app-nav button:hover, .top-app-nav button.activo { background:var(--accent); color:#fff; }
+		.notification-button { position:relative; width:38px !important; height:36px; padding:7px !important; display:grid; place-items:center; }
+		.bell-icon { display:block; position:relative; width:14px; height:15px; border:2px solid currentColor; border-radius:9px 9px 4px 4px; }
+		.bell-icon::before { content:""; position:absolute; left:3px; bottom:-5px; width:5px; height:3px; border-radius:50%; background:currentColor; }
+		.bell-icon::after { content:""; position:absolute; left:-4px; bottom:-2px; width:18px; height:2px; border-radius:2px; background:currentColor; }
+		.notification-count { position:absolute; top:-5px; right:-5px; min-width:16px; height:16px; padding:0 3px; border-radius:999px; background:#ef8354; color:#fff; font-size:.65rem; line-height:16px; text-align:center; }
 		.top-app-nav .top-logout { background:transparent; border:1px solid rgba(255,255,255,.5); }
 		.top-welcome { color:rgba(255,255,255,.9); font-size:.82rem; font-weight:700; white-space:nowrap; padding:0 4px 0 8px; }
 		.avatar { width:34px; height:34px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,.8); background:#d9f5ef; vertical-align:middle; }
@@ -79,6 +84,15 @@
 		.profile-avatar { width:88px; height:88px; border:3px solid var(--accent); }
 		.top-user-actions { display:flex; align-items:center; gap:8px; margin-left:auto; }
 		.top-user-actions .top-logout { background:#092d43; color:#fff; border:1px solid #061f30; box-shadow:0 5px 12px rgba(3,25,39,.28); }
+		.ai-assistant { position:fixed; right:20px; bottom:20px; z-index:30; width:min(360px,calc(100vw - 28px)); background:#fff; border:1px solid #cfe1e6; border-radius:16px; box-shadow:0 18px 42px rgba(18,52,77,.2); overflow:hidden; }
+		.ai-assistant-toggle { width:100%; margin:0; border-radius:0; text-align:left; }
+		.ai-assistant-body { padding:14px; }
+		.ai-assistant-messages { max-height:220px; overflow:auto; display:grid; gap:8px; margin-bottom:10px; }
+		.ai-message { padding:9px 11px; border-radius:10px; background:#eef7f7; color:var(--ink); font-size:.9rem; line-height:1.45; }
+		.ai-message.user { background:#e7eff8; text-align:right; }
+		.ai-assistant-form { display:flex; gap:8px; margin:0 !important; }
+		.ai-assistant-form input { min-width:0; }
+		.ai-assistant-form button { width:auto; margin:0; white-space:nowrap; }
 		.nav-button {
 			padding:12px 18px; border:none; border-radius:999px; background:var(--accent); color:#fff; font-weight:700; cursor:pointer; 
 		}
@@ -465,7 +479,7 @@
 					<div id="topTeacherNav" class="top-role-nav hidden"><button type="button" data-top-panel="profesorInicio">Inicio</button><button type="button" data-top-panel="profesorInicio">Aulas</button><button type="button" data-top-panel="profesorTareas">Tareas</button><button type="button" data-top-panel="profesorEvidencias">Evidencias</button><button type="button" data-top-panel="profesorMonedas">ClassCoins</button><button type="button" data-top-panel="profesorRanking">Ranking</button><button type="button" data-top-panel="profesorManual">Manual de uso</button><button type="button" data-top-panel="profesorPerfil">Perfil</button></div>
 					<div id="topAdminNav" class="top-role-nav hidden"><button type="button" data-top-panel="adminInicio">Inicio</button><button type="button" data-top-panel="adminClases">Aulas</button><button type="button" data-top-panel="adminPersonas">Personas</button><button type="button" data-top-panel="adminMercado">Mercado</button><button type="button" id="topInstituciones" class="hidden" data-top-panel="adminInstituciones">Instituciones</button><button type="button" data-top-panel="adminManual">Manual de uso</button><button type="button" data-top-panel="adminPerfil">Perfil</button></div>
 				</div>
-				<div id="topUserActions" class="top-user-actions hidden"><span id="topAvatar"></span><span id="topWelcome" class="top-welcome"></span><button type="button" class="top-logout salir">Salir</button></div>
+				<div id="topUserActions" class="top-user-actions hidden"><span id="topAvatar"></span><span id="topWelcome" class="top-welcome"></span><button type="button" class="notification-button" data-top-panel="notificacionesPanel" aria-label="Notificaciones"><span class="bell-icon"></span><span class="notification-count">0</span></button><button type="button" class="top-logout salir">Salir</button></div>
 			</div>
 		</nav>
 		<div class="login-shell container">
@@ -508,12 +522,14 @@
 				<div id="inicioPanel" class="panel activo">
 					<h2>Perfil del estudiante</h2>
 					<p id="bienvenida"></p>
+					<div id="inicioAnunciosEstudiante" class="list-simple"></div>
 					<div class="quick-grid">
 						<div class="metric-card"><span>Asistencia</span><strong id="statAsistencia">0%</strong></div>
 						<div class="metric-card"><span>Logros</span><strong id="statLogros">0</strong></div>
 					</div>
 					<div class="inicio-layout"><aside id="listaMaterias" class="barra-materias"></aside><div id="detalleMateria" class="detalle-materia"><p>Selecciona una materia para ver sus calificaciones.</p></div></div>
 				</div>
+				<div id="notificacionesPanel" class="panel"><h2>Notificaciones</h2><div id="listaNotificacionesEstudiante" class="list-simple"></div></div>
 				<div id="materiasPanel" class="panel">
 					<h2>Mis materias</h2>
 					<div class="inicio-layout"><aside id="listaMateriasPanel" class="barra-materias"></aside><div id="detalleMateriaPanel" class="detalle-materia"><p>Selecciona una materia para ver sus calificaciones.</p></div></div>
@@ -548,6 +564,7 @@
 
 			<section id="profesor" class="card hidden">
 				<div id="profesorInicio" class="panel activo"><h2>Panel del profesor</h2>
+					<div id="inicioAnunciosProfesor" class="list-simple"></div>
 					<div class="quick-grid">
 						<div class="metric-card"><span>Grupos</span><strong id="statGrupos">0</strong></div>
 						<div class="metric-card"><span>Estudiantes</span><strong id="statGrupoEstudiantes">0</strong></div>
@@ -595,6 +612,7 @@
 						<button type="submit">Crear aula</button><p id="profesorAulaMensaje" class="success"></p>
 					</form>
 				</div>
+				<div id="profesorNotificaciones" class="panel"><h2>Notificaciones</h2><div id="listaNotificacionesProfesor" class="list-simple"></div></div>
 				<div><h2>Mis materias</h2><div id="listaMateriasProfesor" class="list-simple"></div></div>
 				<div><h2>Mis aulas</h2><div id="listaAulasProfesor" class="list-simple"></div></div>
 				<div>
@@ -654,6 +672,8 @@
 				<div id="adminInicio" class="panel activo">
 				<h2 id="tituloPanelAdmin">Panel del administrador</h2>
 				<p id="subtituloPanelAdmin">Gestiona el salón, los profesores y las recompensas.</p>
+				<div id="inicioAnunciosAdmin" class="list-simple"></div>
+				<form id="adminAnuncioForm" class="formulario-pequeno"><h2>Publicar anuncio</h2><label for="adminAnuncioTitulo">Título</label><input id="adminAnuncioTitulo" required><label for="adminAnuncioTexto">Mensaje</label><textarea id="adminAnuncioTexto" rows="3" required></textarea><button type="submit">Publicar anuncio</button><p id="adminAnuncioMensaje" class="success"></p></form>
 				<div class="resumen-admin">
 					<div class="metric-card"><span>Estudiantes</span><strong id="statEstudiantes">0</strong></div>
 					<div class="metric-card"><span>Profesores</span><strong id="statProfesores">0</strong></div>
@@ -674,6 +694,7 @@
 					</div>
 				</div>
 			</div>
+				<div id="adminNotificaciones" class="panel"><h2>Notificaciones</h2><div id="listaNotificacionesAdmin" class="list-simple"></div></div>
 				<div id="adminClases" class="panel">
 					<h2>Administrar aulas y horarios</h2>
 					<form id="aulaForm" class="formulario-pequeno">
@@ -766,6 +787,7 @@
 			</section>
 		</div>
 	</main>
+	<div id="aiAssistant" class="ai-assistant hidden"><button id="aiAssistantToggle" class="ai-assistant-toggle" type="button">Asistente ClassPoint</button><div id="aiAssistantBody" class="ai-assistant-body hidden"><div id="aiAssistantMessages" class="ai-assistant-messages"><div class="ai-message">Hola. Puedo ayudarte con aulas, materias, tareas, ClassCoins e instituciones.</div></div><form id="aiAssistantForm" class="ai-assistant-form"><input id="aiAssistantInput" placeholder="Escribe tu pregunta" autocomplete="off" required><button type="submit">Enviar</button></form></div></div>
 	<script>
 		const normalizarTexto = valor => String(valor ?? '').trim().toLowerCase();
 		const leerJSON = (clave, valorInicial) => {
@@ -809,6 +831,7 @@
 		let compras = leerJSON('compras', {});
 		let fotosPerfil = leerJSON('fotosPerfil', {});
 		let perfiles = leerJSON('perfiles', {});
+		let anuncios = leerJSON('anuncios', []);
 		if (localStorage.getItem('economiaVersion') !== '3') { monedas = {}; localStorage.setItem('economiaVersion', '3'); localStorage.setItem('monedas', '{}'); }
 			if (!tareas.length) {
 				tareas = [
@@ -844,6 +867,19 @@
 		localStorage.setItem('materias', JSON.stringify(materias)); localStorage.setItem('aulas', JSON.stringify(aulas)); localStorage.setItem('calificaciones', JSON.stringify(calificaciones)); localStorage.setItem('tareas', JSON.stringify(tareas)); localStorage.setItem('sesiones', JSON.stringify(sesiones)); localStorage.setItem('evidencias', JSON.stringify(evidencias)); localStorage.setItem('asistencia', JSON.stringify(asistencia));
 		localStorage.setItem('productos', JSON.stringify(productos));
 		const $ = id => document.getElementById(id);
+		function responderAsistente(pregunta) {
+			const texto = normalizarTexto(pregunta); const usuario = usuarioSesion();
+			if (texto.includes('aula') || texto.includes('codigo')) return 'Para entrar a un aula, abre Aulas, escribe el código que te dio el profesor y pulsa Ingresar al aula. Después selecciona el aula para ver sus materias.';
+			if (texto.includes('materia') || texto.includes('calificacion') || texto.includes('nota')) return usuario?.rol === 'profesor' ? 'Desde Inicio puedes elegir un estudiante, aula y materia para guardar una calificación.' : 'En Materias selecciona una materia para consultar tus calificaciones.';
+			if (texto.includes('tarea') || texto.includes('evidencia')) return usuario?.rol === 'estudiante' ? 'En Tareas revisa tus entregas. En Evidencias puedes subir un archivo o enlace.' : 'En Tareas crea actividades y en Evidencias revisa los trabajos enviados.';
+			if (texto.includes('coin') || texto.includes('mercado') || texto.includes('compr')) return usuario?.rol === 'profesor' ? 'Desde ClassCoins selecciona un estudiante, una materia y una cantidad para entregar monedas.' : 'En Mercado puedes consultar recompensas y comprar usando tus ClassCoins.';
+			if (texto.includes('institucion') || texto.includes('administrador')) return esCreadorOriginal() ? 'En Instituciones puedes ver miembros, roles, modificar nombres, quitar administradores y eliminar instituciones vacías.' : 'Tu cuenta solo puede trabajar dentro de la institución asignada.';
+			if (texto.includes('perfil') || texto.includes('foto')) return 'En Perfil puedes guardar tu foto, intereses, actividad de la tarde, descripción y contraseña.';
+			return 'Puedo orientarte sobre aulas, materias, calificaciones, tareas, evidencias, ClassCoins, Mercado, Perfil e instituciones.';
+		}
+		function agregarMensajeAsistente(texto, esUsuario = false) { const mensajes = $('aiAssistantMessages'); const mensaje = document.createElement('div'); mensaje.className = `ai-message${esUsuario ? ' user' : ''}`; mensaje.textContent = texto; mensajes.appendChild(mensaje); mensajes.scrollTop = mensajes.scrollHeight; }
+		$('aiAssistantToggle').addEventListener('click', () => $('aiAssistantBody').classList.toggle('hidden'));
+		$('aiAssistantForm').addEventListener('submit', e => { e.preventDefault(); const entrada = $('aiAssistantInput'); const pregunta = entrada.value.trim(); if (!pregunta) return; agregarMensajeAsistente(pregunta, true); agregarMensajeAsistente(responderAsistente(pregunta)); entrada.value = ''; });
 			function generarCodigoAula() { return `CP-${Math.random().toString(36).slice(2, 6).toUpperCase()}-${Math.floor(Math.random() * 90 + 10)}`; }
 				function usuarioSesion() { return usuarios.find(u => u.usuario === sessionStorage.getItem('usuario')); }
 				function esCreadorOriginal() { return usuarioSesion()?.rol === 'creadorOriginal'; }
@@ -854,6 +890,9 @@
 				function usuariosVisibles() { return usuarios.filter(usuario => perteneceInstitucion(usuario)); }
 				function esRolAdministrativo(rol) { return rol === 'administrador' || rol === 'creadorOriginal'; }
 				function avatarHTML(usuario, clase = 'avatar') { const foto = fotosPerfil[usuario.usuario]; return foto ? `<img class="${clase}" src="${foto}" alt="Foto de ${usuario.nombre}">` : `<span class="${clase} avatar-placeholder">${normalizarTexto(usuario.nombre).charAt(0).toUpperCase() || '?'}</span>`; }
+				function anunciosVisibles() { return anuncios.filter(anuncio => esCreadorOriginal() || anuncio.institucion === institucionSesion()); }
+				function renderAnuncios(elemento, limite = 0) { const lista = anunciosVisibles().slice().reverse(); const visibles = limite ? lista.slice(0, limite) : lista; $(elemento).innerHTML = visibles.length ? visibles.map(anuncio => `<article class="list-item"><strong>${anuncio.titulo}</strong><small>${anuncio.autor || 'ClassPoint'} · ${anuncio.fecha || ''}</small><p>${anuncio.texto}</p></article>`).join('') : '<p>No hay anuncios nuevos.</p>'; }
+				function actualizarNotificaciones() { const total = anunciosVisibles().length; document.querySelectorAll('.notification-count').forEach(contador => contador.textContent = total > 99 ? '99+' : total); }
 				function perfilUsuario(usuario) { return perfiles[usuario.usuario] || { tardes:'', intereses:'', descripcion:'' }; }
 				function cargarDatosPerfil(usuario, ids) { const perfil = perfilUsuario(usuario); $(ids.tardes).value = perfil.tardes; $(ids.intereses).value = perfil.intereses; $(ids.descripcion).value = perfil.descripcion; }
 				function guardarDatosPerfil(usuario, ids, mensaje) { const tardes = $(ids.tardes).value.trim(); const intereses = $(ids.intereses).value.trim(); const descripcion = $(ids.descripcion).value.trim(); if (!tardes || !intereses || !descripcion) return $(mensaje).textContent = 'Completa todos los datos del perfil.'; perfiles[usuario.usuario] = { tardes, intereses, descripcion }; localStorage.setItem('perfiles', JSON.stringify(perfiles)); $(mensaje).textContent = 'Información del perfil guardada.'; renderPersonasAdmin(); }
@@ -872,9 +911,11 @@
 				if (!topNav) return;
 				const usuario = usuarios.find(item => item.usuario === sessionStorage.getItem('usuario'));
 				topNav.classList.toggle('hidden', !usuario);
+				$('aiAssistant').classList.toggle('hidden', !usuario);
 				$('topUserActions').classList.toggle('hidden', !usuario);
 				$('topWelcome').textContent = usuario ? `Bienvenido/a, ${usuario.nombre}` : '';
 				$('topAvatar').innerHTML = usuario ? avatarHTML(usuario) : '';
+				actualizarNotificaciones();
 				document.querySelectorAll('.top-role-nav').forEach(nav => nav.classList.add('hidden'));
 				if (!usuario) return;
 				const navId = esRolAdministrativo(usuario.rol) ? 'topAdminNav' : usuario.rol === 'profesor' ? 'topTeacherNav' : 'topStudentNav';
@@ -944,6 +985,7 @@
 		function guardarMaterias() { localStorage.setItem('materias', JSON.stringify(materias)); }
 		function guardarSesiones() { localStorage.setItem('sesiones', JSON.stringify(sesiones)); }
 		function renderResumenAdmin() {
+			renderAnuncios('inicioAnunciosAdmin', 3); renderAnuncios('listaNotificacionesAdmin');
 			if ($('nuevoUsuarioInstitucion')) $('nuevoUsuarioInstitucion').innerHTML = (esCreadorOriginal() ? instituciones : instituciones.filter(item => normalizarTexto(item.nombre) === normalizarTexto(institucionSesion()))).map(item => `<option value="${item.nombre}">${item.nombre}</option>`).join('');
 			$('statEstudiantes').textContent = usuariosVisibles().filter(u => u.rol === 'estudiante').length;
 			$('statProfesores').textContent = usuariosVisibles().filter(u => u.rol === 'profesor').length;
@@ -1158,6 +1200,7 @@
 		}
 		function renderEstudiante(user) {
 			$('bienvenida').textContent = `Bienvenido/a, ${user.nombre}.`;
+			renderAnuncios('inicioAnunciosEstudiante', 3); renderAnuncios('listaNotificacionesEstudiante');
 			$('nombrePerfil').textContent = user.nombre; renderAvatarPerfil('perfilAvatarEstudiante', user); cargarDatosPerfil(user, { tardes:'perfilTardesEstudiante', intereses:'perfilInteresesEstudiante', descripcion:'perfilDescripcionEstudiante' }); renderRanking(); mostrarPanel('inicioPanel');
 				renderTareasEstudiante(user);
 				renderEvidenciasEstudiante(user);
@@ -1177,6 +1220,7 @@
 		}
 		function mostrarMateria(notas, materia) { const resultados = notas.filter(n => n.materia === materia); $('detalleMateria').innerHTML = `<h3>${materia}</h3><table><thead><tr><th>Calificación</th></tr></thead><tbody>${resultados.map(n => `<tr><td class="nota">${n.nota}</td></tr>`).join('')}</tbody></table>`; }
 		function renderProfesor() {
+			renderAnuncios('inicioAnunciosProfesor', 3); renderAnuncios('listaNotificacionesProfesor');
 			renderAvatarPerfil('perfilAvatarProfesor', usuarioSesion());
 			cargarDatosPerfil(usuarioSesion(), { tardes:'perfilTardesProfesor', intereses:'perfilInteresesProfesor', descripcion:'perfilDescripcionProfesor' });
 			const estudiantes = usuariosVisibles().filter(u => u.rol === 'estudiante').map(u => `<option value="${u.usuario}">${u.nombre}</option>`).join('');
@@ -1262,7 +1306,8 @@
 		});
 		$('notaForm').addEventListener('submit', e => { e.preventDefault(); const u = usuarios.find(x => x.usuario === $('alumno').value); const aulaId = $('notaAula').value; const materia = $('materia').value.trim(); if (!u || !aulaId || !materia) return $('notaMensaje').textContent = 'Selecciona estudiante, aula y materia.'; calificaciones.push({ usuario:u.usuario, nombre:u.nombre, materia, aulaId, nota:$('nota').value, institucion:institucionSesion() }); localStorage.setItem('calificaciones', JSON.stringify(calificaciones)); $('notaMensaje').textContent = 'Calificación guardada.'; $('materia').value = ''; renderProfesor(); renderResumenAdmin(); });
 		$('sesionForm').addEventListener('submit', e => { e.preventDefault(); const sesion = { id: Date.now(), titulo: $('sesionTitulo').value.trim(), fecha: $('sesionFecha').value, aula: $('sesionAula').value.trim(), descripcion: $('sesionDescripcion').value.trim(), institucion:institucionSesion() }; sesiones.push(sesion); guardarSesiones(); renderSesionesProfesor(); renderResumenAdmin(); $('sesionForm').reset(); $('sesionMensaje').textContent = 'Sesión creada correctamente.'; });
-			$('anuncioForm').addEventListener('submit', e => { e.preventDefault(); const mensaje = { titulo: $('anuncioTitulo').value.trim(), texto: $('anuncioTexto').value.trim() }; if (!mensaje.titulo || !mensaje.texto) return $('anuncioMensaje').textContent = 'Completa los campos del anuncio.'; const anuncio = { id: Date.now().toString(), ...mensaje }; const anuncios = JSON.parse(localStorage.getItem('anuncios') || '[]'); anuncios.push(anuncio); localStorage.setItem('anuncios', JSON.stringify(anuncios)); $('anuncioForm').reset(); $('anuncioMensaje').textContent = 'Anuncio publicado.'; });
+			$('anuncioForm').addEventListener('submit', e => { e.preventDefault(); const titulo = $('anuncioTitulo').value.trim(); const texto = $('anuncioTexto').value.trim(); const autor = usuarioSesion(); if (!titulo || !texto || !autor) return $('anuncioMensaje').textContent = 'Completa los campos del anuncio.'; anuncios.push({ id: Date.now().toString(), titulo, texto, autor:autor.nombre, rol:autor.rol, institucion:institucionSesion(), fecha:new Date().toLocaleDateString('es-ES') }); localStorage.setItem('anuncios', JSON.stringify(anuncios)); $('anuncioForm').reset(); renderAnuncios('inicioAnunciosProfesor', 3); renderAnuncios('listaNotificacionesProfesor'); actualizarNotificaciones(); $('anuncioMensaje').textContent = 'Anuncio publicado.'; });
+			$('adminAnuncioForm').addEventListener('submit', e => { e.preventDefault(); const titulo = $('adminAnuncioTitulo').value.trim(); const texto = $('adminAnuncioTexto').value.trim(); const autor = usuarioSesion(); if (!titulo || !texto || !autor) return $('adminAnuncioMensaje').textContent = 'Completa los campos del anuncio.'; anuncios.push({ id: Date.now().toString(), titulo, texto, autor:autor.nombre, rol:autor.rol, institucion:institucionSesion(), fecha:new Date().toLocaleDateString('es-ES') }); localStorage.setItem('anuncios', JSON.stringify(anuncios)); $('adminAnuncioForm').reset(); renderAnuncios('inicioAnunciosAdmin', 3); renderAnuncios('listaNotificacionesAdmin'); actualizarNotificaciones(); $('adminAnuncioMensaje').textContent = 'Anuncio publicado.'; });
 			$('profesorMateriaForm').addEventListener('submit', e => { e.preventDefault(); const nombre = $('profesorMateriaNombre').value.trim(); const profesor = sessionStorage.getItem('usuario'); const aulaId = $('profesorMateriaAula').value; if (!nombre || !aulaId) return $('profesorMateriaMensaje').textContent = 'Escribe el nombre y selecciona un aula.'; if (materias.some(materia => normalizarTexto(materia.nombre) === normalizarTexto(nombre) && materia.aulaId === aulaId)) return $('profesorMateriaMensaje').textContent = 'Esa materia ya existe en esta aula.'; materias.push({ id: Date.now().toString(), nombre, profesor, aulaId, institucion:institucionSesion() }); guardarMaterias(); $('profesorMateriaForm').reset(); $('profesorMateriaMensaje').textContent = 'Materia creada correctamente.'; actualizarListasClases(); renderProfesor(); renderResumenAdmin(); });
 			$('profesorAulaForm').addEventListener('submit', e => { e.preventDefault(); const nombre = $('profesorAulaNombre').value.trim(); const horario = $('profesorAulaHorario').value.trim(); const profesor = sessionStorage.getItem('usuario'); if (!nombre || !horario) return $('profesorAulaMensaje').textContent = 'Completa el nombre y el horario.'; if (aulas.some(aula => normalizarTexto(aula.nombre) === normalizarTexto(nombre) && aula.institucion === institucionSesion())) return $('profesorAulaMensaje').textContent = 'Esa aula ya existe.'; aulas.push({ id: `aula-${Date.now()}`, nombre, horario, profesor, institucion:institucionSesion(), codigo: generarCodigoAula(), estudiantes:[] }); guardarAulas(); $('profesorAulaForm').reset(); $('profesorAulaMensaje').textContent = 'Aula creada. Código generado para compartir.'; actualizarListasClases(); renderResumenAdmin(); renderProfesor(); });
 			$('unirseAulaForm').addEventListener('submit', e => { e.preventDefault(); const usuario = sessionStorage.getItem('usuario'); const codigo = normalizarTexto($('codigoAula').value).replace(/\s+/g, '').toUpperCase(); const aula = aulas.find(item => item.codigo.replace(/\s+/g, '').toUpperCase() === codigo); if (!aula) return $('unirseAulaMensaje').textContent = 'El código no corresponde a ninguna aula.'; if (!perteneceInstitucion(aula)) return $('unirseAulaMensaje').textContent = 'Esa aula pertenece a otra institución.'; if (aula.estudiantes.includes(usuario)) return $('unirseAulaMensaje').textContent = 'Ya perteneces a esta aula.'; aula.estudiantes.push(usuario); guardarAulas(); $('unirseAulaForm').reset(); $('unirseAulaMensaje').textContent = `Te uniste a ${aula.nombre}.`; renderAulasEstudiante(usuarios.find(item => item.usuario === usuario)); });
@@ -1282,10 +1327,11 @@
 		$('fotoPerfilAdminForm').addEventListener('submit', e => { e.preventDefault(); const usuario = usuarioSesion(); guardarFotoPerfil(usuario, $('fotoPerfilAdmin').files[0], 'fotoPerfilAdminMensaje'); });
 		document.querySelectorAll('#profesor .barra button').forEach(boton => boton.addEventListener('click', () => { mostrarPanelProfesor(boton.dataset.panel); if (boton.dataset.panel === 'profesorRanking') renderRankingProfesor(); }));
 		document.querySelectorAll('#administrador .barra button').forEach(boton => boton.addEventListener('click', () => mostrarPanelAdmin(boton.dataset.panel)));
-		document.querySelectorAll('.top-app-nav [data-top-panel]').forEach(boton => boton.addEventListener('click', () => {
+		document.querySelectorAll('.top-app-nav [data-top-panel], .top-user-actions [data-top-panel]').forEach(boton => boton.addEventListener('click', () => {
 			const usuario = usuarios.find(item => item.usuario === sessionStorage.getItem('usuario'));
 			if (!usuario) return;
-			const panel = boton.dataset.topPanel;
+			let panel = boton.dataset.topPanel;
+			if (panel === 'notificacionesPanel') panel = usuario.rol === 'profesor' ? 'profesorNotificaciones' : esRolAdministrativo(usuario.rol) ? 'adminNotificaciones' : 'notificacionesPanel';
 			if (esRolAdministrativo(usuario.rol)) { mostrarPanelAdmin(panel); if (panel === 'adminPerfil') { renderAvatarPerfil('perfilAvatarAdmin', usuario); cargarDatosPerfil(usuario, { tardes:'perfilTardesAdmin', intereses:'perfilInteresesAdmin', descripcion:'perfilDescripcionAdmin' }); } }
 			else if (usuario.rol === 'profesor') { mostrarPanelProfesor(panel); if (panel === 'profesorRanking') renderRankingProfesor(); }
 			else { mostrarPanel(panel); if (panel === 'rankingPanel') renderRanking(); }
