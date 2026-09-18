@@ -441,6 +441,18 @@
 			.resumen-admin { grid-template-columns:1fr 1fr; gap:10px; }
 			.metric-card { min-height:88px; padding:12px 10px; }
 		}
+		/* Auto-hide the application menu until the pointer reaches the top edge. */
+		.site-header.app-header {
+			position:fixed;
+			top:0;
+			left:0;
+			right:0;
+			z-index:20;
+			transform:translateY(calc(-100% + 16px));
+			transition:transform .24s ease;
+		}
+		.site-header.app-header:hover,
+		.site-header.app-header:focus-within { transform:translateY(0); }
 	</style>
 </head>
 <body>
