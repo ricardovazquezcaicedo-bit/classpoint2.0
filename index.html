@@ -1085,9 +1085,20 @@
 			document.querySelectorAll('#listaProfesoresAdmin .quitar-profesor').forEach(boton => boton.onclick = () => quitarProfesor(boton.dataset.usuario));
 		}
 		function renderInstituciones() {
-			$('listaInstituciones').innerHTML = instituciones.map(institucion => { const miembros = usuarios.filter(usuario => usuario.institucion === institucion.nombre); const detalle = esCreadorOriginal() ? `<div class="institucion-miembros">${miembros.length ? miembros.map(miembro => `<div class="institucion-miembro">${avatarHTML(miembro)} <span><strong>${miembro.nombre}</strong><small>${miembro.rol === 'creadorOriginal' ? 'Creador original' : miembro.rol === 'administrador' ? 'Administrador institucional' : miembro.rol === 'profesor' ? 'Profesor' : 'Estudiante'}</small></span></div>`).join('') : '<small>No hay cuentas asociadas.</small>'}</div>` : ''; return `<div class="list-item"><strong>${institucion.nombre}</strong><small>${miembros.length} cuenta(s)</small><br><button type="button" class="editar-institucion" data-id="${institucion.id}">Modificar</button><button type="button" class="secondary eliminar-institucion" data-id="${institucion.id}">Eliminar</button>${detalle}</div>`; }).join('');
+			$('listaInstituciones').innerHTML = instituciones.map(institucion => { const miembros = usuarios.filter(usuario => usuario.institucion === institucion.nombre); const detalle = esCreadorOriginal() ? `<div class="institucion-miembros">${miembros.length ? miembros.map(miembro => `<div class="institucion-miembro">${avatarHTML(miembro)} <span><strong>${miembro.nombre}</strong><small>${miembro.rol === 'creadorOriginal' ? 'Creador original' : miembro.rol === 'administrador' ? 'Administrador institucional' : miembro.rol === 'profesor' ? 'Profesor' : 'Estudiante'}</small></span>${miembro.rol === 'administrador' ? `<button type="button" class="secondary quitar-administrador" data-usuario="${miembro.usuario}">Quitar administrador</button>` : ''}</div>`).join('') : '<small>No hay cuentas asociadas.</small>'}</div>` : ''; return `<div class="list-item"><strong>${institucion.nombre}</strong><small>${miembros.length} cuenta(s)</small><br><button type="button" class="editar-institucion" data-id="${institucion.id}">Modificar</button><button type="button" class="secondary eliminar-institucion" data-id="${institucion.id}">Eliminar</button>${detalle}</div>`; }).join('');
 			document.querySelectorAll('.editar-institucion').forEach(boton => boton.onclick = () => editarInstitucion(boton.dataset.id));
 			document.querySelectorAll('.eliminar-institucion').forEach(boton => boton.onclick = () => eliminarInstitucion(boton.dataset.id));
+			document.querySelectorAll('.quitar-administrador').forEach(boton => boton.onclick = () => quitarAdministradorInstitucional(boton.dataset.usuario));
+		}
+		function quitarAdministradorInstitucional(usuario) {
+			if (!esCreadorOriginal()) return;
+			const administrador = usuarios.find(item => item.usuario === usuario && item.rol === 'administrador');
+			if (!administrador || !confirm(`¿Quitar a ${administrador.nombre} como administrador institucional?`)) return;
+			usuarios.splice(usuarios.indexOf(administrador), 1);
+			const administradores = leerJSON('administradoresExtra', []).filter(item => item.usuario !== usuario);
+			localStorage.setItem('administradoresExtra', JSON.stringify(administradores));
+			delete fotosPerfil[usuario]; delete perfiles[usuario]; localStorage.setItem('fotosPerfil', JSON.stringify(fotosPerfil)); localStorage.setItem('perfiles', JSON.stringify(perfiles));
+			renderInstituciones(); renderPersonasAdmin(); renderResumenAdmin(); $('institucionMensaje').textContent = `${administrador.nombre} fue quitado como administrador.`;
 		}
 		function editarInstitucion(id) {
 			if (!esCreadorOriginal()) return;
