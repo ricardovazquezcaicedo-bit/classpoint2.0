@@ -594,6 +594,7 @@
 				</form>
 				<form id="anuncioForm" class="formulario-pequeno">
 					<h2>Enviar anuncio</h2>
+					<label for="anuncioAula">Grupo / aula</label><select id="anuncioAula" required></select>
 					<label for="anuncioTitulo">Título</label><input id="anuncioTitulo" required>
 					<label for="anuncioTexto">Mensaje</label><input id="anuncioTexto" required>
 					<button type="submit">Publicar</button><p id="anuncioMensaje" class="success"></p>
@@ -673,7 +674,7 @@
 				<h2 id="tituloPanelAdmin">Panel del administrador</h2>
 				<p id="subtituloPanelAdmin">Gestiona el salón, los profesores y las recompensas.</p>
 				<div id="inicioAnunciosAdmin" class="list-simple"></div>
-				<form id="adminAnuncioForm" class="formulario-pequeno"><h2>Publicar anuncio</h2><label for="adminAnuncioTitulo">Título</label><input id="adminAnuncioTitulo" required><label for="adminAnuncioTexto">Mensaje</label><textarea id="adminAnuncioTexto" rows="3" required></textarea><button type="submit">Publicar anuncio</button><p id="adminAnuncioMensaje" class="success"></p></form>
+				<form id="adminAnuncioForm" class="formulario-pequeno"><h2>Publicar anuncio</h2><label for="adminAnuncioAula">Grupo / aula</label><select id="adminAnuncioAula" required></select><label for="adminAnuncioTitulo">Título</label><input id="adminAnuncioTitulo" required><label for="adminAnuncioTexto">Mensaje</label><textarea id="adminAnuncioTexto" rows="3" required></textarea><button type="submit">Publicar anuncio</button><p id="adminAnuncioMensaje" class="success"></p></form>
 				<div class="resumen-admin">
 					<div class="metric-card"><span>Estudiantes</span><strong id="statEstudiantes">0</strong></div>
 					<div class="metric-card"><span>Profesores</span><strong id="statProfesores">0</strong></div>
@@ -890,9 +891,11 @@
 				function usuariosVisibles() { return usuarios.filter(usuario => perteneceInstitucion(usuario)); }
 				function esRolAdministrativo(rol) { return rol === 'administrador' || rol === 'creadorOriginal'; }
 				function avatarHTML(usuario, clase = 'avatar') { const foto = fotosPerfil[usuario.usuario]; return foto ? `<img class="${clase}" src="${foto}" alt="Foto de ${usuario.nombre}">` : `<span class="${clase} avatar-placeholder">${normalizarTexto(usuario.nombre).charAt(0).toUpperCase() || '?'}</span>`; }
-				function anunciosVisibles() { return anuncios.filter(anuncio => esCreadorOriginal() || anuncio.institucion === institucionSesion()); }
-				function renderAnuncios(elemento, limite = 0) { const lista = anunciosVisibles().slice().reverse(); const visibles = limite ? lista.slice(0, limite) : lista; $(elemento).innerHTML = visibles.length ? visibles.map(anuncio => `<article class="list-item"><strong>${anuncio.titulo}</strong><small>${anuncio.autor || 'ClassPoint'} · ${anuncio.fecha || ''}</small><p>${anuncio.texto}</p></article>`).join('') : '<p>No hay anuncios nuevos.</p>'; }
+				function anunciosVisibles() { const usuario = usuarioSesion(); return anuncios.filter(anuncio => { if (!esCreadorOriginal() && anuncio.institucion !== institucionSesion()) return false; if (usuario?.rol === 'estudiante') return anuncio.aulaId && aulas.some(aula => aula.id === anuncio.aulaId && aula.estudiantes.includes(usuario.usuario)); return true; }); }
+				function puedeEliminarAnuncio(anuncio) { const usuario = usuarioSesion(); return Boolean(usuario && (esCreadorOriginal() || usuario.rol === 'administrador' || anuncio.autorUsuario === usuario.usuario)); }
+				function renderAnuncios(elemento, limite = 0) { const lista = anunciosVisibles().slice().reverse(); const visibles = limite ? lista.slice(0, limite) : lista; $(elemento).innerHTML = visibles.length ? visibles.map(anuncio => `<article class="list-item"><strong>${anuncio.titulo}</strong><small>${anuncio.autor || 'ClassPoint'} · Fecha: ${anuncio.fecha || 'Sin fecha'}</small><p>${anuncio.texto}</p>${puedeEliminarAnuncio(anuncio) ? `<button type="button" class="secondary eliminar-anuncio" data-id="${anuncio.id}">Eliminar</button>` : ''}</article>`).join('') : '<p>No hay anuncios nuevos.</p>'; document.querySelectorAll('.eliminar-anuncio').forEach(boton => boton.onclick = () => eliminarAnuncio(boton.dataset.id)); }
 				function actualizarNotificaciones() { const total = anunciosVisibles().length; document.querySelectorAll('.notification-count').forEach(contador => contador.textContent = total > 99 ? '99+' : total); }
+				function eliminarAnuncio(id) { const anuncio = anuncios.find(item => item.id === id); if (!anuncio || !puedeEliminarAnuncio(anuncio) || !confirm('¿Eliminar este anuncio?')) return; anuncios = anuncios.filter(item => item.id !== id); localStorage.setItem('anuncios', JSON.stringify(anuncios)); const rol = usuarioSesion()?.rol; renderAnuncios(rol === 'estudiante' ? 'inicioAnunciosEstudiante' : rol === 'profesor' ? 'inicioAnunciosProfesor' : 'inicioAnunciosAdmin', 3); renderAnuncios(rol === 'estudiante' ? 'listaNotificacionesEstudiante' : rol === 'profesor' ? 'listaNotificacionesProfesor' : 'listaNotificacionesAdmin'); actualizarNotificaciones(); }
 				function perfilUsuario(usuario) { return perfiles[usuario.usuario] || { tardes:'', intereses:'', descripcion:'' }; }
 				function cargarDatosPerfil(usuario, ids) { const perfil = perfilUsuario(usuario); $(ids.tardes).value = perfil.tardes; $(ids.intereses).value = perfil.intereses; $(ids.descripcion).value = perfil.descripcion; }
 				function guardarDatosPerfil(usuario, ids, mensaje) { const tardes = $(ids.tardes).value.trim(); const intereses = $(ids.intereses).value.trim(); const descripcion = $(ids.descripcion).value.trim(); if (!tardes || !intereses || !descripcion) return $(mensaje).textContent = 'Completa todos los datos del perfil.'; perfiles[usuario.usuario] = { tardes, intereses, descripcion }; localStorage.setItem('perfiles', JSON.stringify(perfiles)); $(mensaje).textContent = 'Información del perfil guardada.'; renderPersonasAdmin(); }
