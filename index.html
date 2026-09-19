@@ -1934,7 +1934,9 @@ label{
         function renderChismografo() {
             const usuario = usuarioSesion();
             const institucion = institucionSesion();
-            const companeros = usuariosVisibles().filter(item => item.rol === 'estudiante' && item.usuario !== usuario?.usuario);
+            const aulasUsuario = aulas.filter(aula => aula.estudiantes.includes(usuario?.usuario) && perteneceInstitucion(aula));
+            const usuariosDeMisAulas = new Set(aulasUsuario.flatMap(aula => aula.estudiantes));
+            const companeros = usuariosVisibles().filter(item => item.rol === 'estudiante' && item.usuario !== usuario?.usuario && usuariosDeMisAulas.has(item.usuario));
             $('chismografoConQuien').innerHTML = '<option value="">Selecciona un compañero o compañera</option>' + companeros.map(item => `<option value="${escapeHtml(item.usuario)}">${escapeHtml(item.nombre)}</option>`).join('');
             const publicaciones = JSON.parse(localStorage.getItem('chismografo') || '[]')
                 .filter(item => item.institucion === institucion)
@@ -2061,11 +2063,15 @@ label{
 				renderAulasEstudiante(user);
 				renderLogrosEstudiante(user);
 			const notas = calificaciones.filter(n => n.usuario === user.usuario);
-			const materias = [...new Set(notas.map(n => n.materia))];
-			$('listaMaterias').innerHTML = materias.length ? materias.map(materia => `<button type="button" class="materia" data-materia="${materia}">${materia}</button>`).join('') : '<p>Aún no tienes materias calificadas.</p>';
+			const aulasDelEstudiante = aulas.filter(aula => aula.estudiantes.includes(user.usuario) && perteneceInstitucion(aula));
+			const idsAulasDelEstudiante = new Set(aulasDelEstudiante.map(aula => aula.id));
+			const materiasDelEstudiante = materias.filter(materia => idsAulasDelEstudiante.has(materia.aulaId) && perteneceInstitucion(materia));
+			const nombresMaterias = [...new Set(materiasDelEstudiante.map(materia => materia.nombre))];
+			const materiasEstudiante = [...new Set([...nombresMaterias, ...notas.filter(nota => nombresMaterias.includes(nota.materia)).map(nota => nota.materia)])];
+			$('listaMaterias').innerHTML = materiasEstudiante.length ? materiasEstudiante.map(materia => `<button type="button" class="materia" data-materia="${materia}">${materia}</button>`).join('') : '<p>Aún no tienes materias calificadas.</p>';
 			$('listaMaterias').querySelectorAll('.materia').forEach(boton => boton.addEventListener('click', () => { mostrarMateria(notas, boton.dataset.materia); renderTienda({ ...user, materia:boton.dataset.materia }); $('listaMaterias').querySelectorAll('.materia').forEach(item => item.classList.toggle('activo', item === boton)); }));
-			renderMateriasEstudiantePanel(user, notas, materias);
-			if (materias.length) { const primeraMateria = $('listaMaterias').querySelector('.materia'); primeraMateria.click(); } else renderTienda(user);
+			renderMateriasEstudiantePanel(user, notas, materiasEstudiante);
+			if (materiasEstudiante.length) { const primeraMateria = $('listaMaterias').querySelector('.materia'); primeraMateria.click(); } else renderTienda(user);
 		}
 		function renderMateriasEstudiantePanel(user, notas, materias) {
 			$('listaMateriasPanel').innerHTML = materias.length ? materias.map(materia => `<button type="button" class="materia" data-materia="${materia}">${materia}</button>`).join('') : '<p>Aún no tienes materias calificadas.</p>';
@@ -2083,6 +2089,13 @@ label{
 			$('profesorMateriaAula').innerHTML = aulasProfesor.map(aula => `<option value="${aula.id}">${aula.nombre}</option>`).join('');
 			$('nuevoEstudianteInstitucion').innerHTML = `<option value="${institucionSesion()}">${institucionSesion()}</option>`;
 			$('notaAula').innerHTML = aulasProfesor.map(aula => `<option value="${aula.id}">${aula.nombre}</option>`).join('');
+			function actualizarEstudiantesPorAula() {
+				const aulaSeleccionada = aulas.find(aula => aula.id === $('notaAula').value);
+				const usuariosAula = new Set(aulaSeleccionada?.estudiantes || []);
+				$('alumno').innerHTML = usuariosVisibles().filter(u => u.rol === 'estudiante' && usuariosAula.has(u.usuario)).map(u => `<option value="${u.usuario}">${u.nombre}</option>`).join('') || '<option value="">No hay estudiantes en esta aula</option>';
+			}
+			$('notaAula').onchange = actualizarEstudiantesPorAula;
+			actualizarEstudiantesPorAula();
 				if ($('tareaEstudiante')) $('tareaEstudiante').innerHTML = estudiantes;
 				if ($('asistenciaEstudiante')) $('asistenciaEstudiante').innerHTML = estudiantes;
 			const opcionesMaterias = [...new Set([...materias.map(m => m.nombre), ...calificaciones.map(n => n.materia)])];
@@ -2158,7 +2171,7 @@ label{
 			$('registroMensaje').textContent = `Cuenta de ${rol} creada. Ya puedes iniciar sesión.`;
 			$('registroForm').reset();
 		});
-		$('notaForm').addEventListener('submit', e => { e.preventDefault(); const u = usuarios.find(x => x.usuario === $('alumno').value); const aulaId = $('notaAula').value; const materia = $('materia').value.trim(); if (!u || !aulaId || !materia) return $('notaMensaje').textContent = 'Selecciona estudiante, aula y materia.'; calificaciones.push({ usuario:u.usuario, nombre:u.nombre, materia, aulaId, nota:$('nota').value, institucion:institucionSesion() }); localStorage.setItem('calificaciones', JSON.stringify(calificaciones)); $('notaMensaje').textContent = 'Calificación guardada.'; $('materia').value = ''; renderProfesor(); renderResumenAdmin(); });
+		$('notaForm').addEventListener('submit', e => { e.preventDefault(); const u = usuarios.find(x => x.usuario === $('alumno').value); const aulaId = $('notaAula').value; const materia = $('materia').value.trim(); const aula = aulas.find(item => item.id === aulaId); const materiaAula = materias.some(item => item.aulaId === aulaId && normalizarTexto(item.nombre) === normalizarTexto(materia)); if (!u || !aulaId || !materia) return $('notaMensaje').textContent = 'Selecciona estudiante, aula y materia.'; if (!aula || !aula.estudiantes.includes(u.usuario)) return $('notaMensaje').textContent = 'El estudiante no pertenece al aula seleccionada.'; if (!materiaAula) return $('notaMensaje').textContent = 'La materia debe estar asignada al aula seleccionada.'; calificaciones.push({ usuario:u.usuario, nombre:u.nombre, materia, aulaId, nota:$('nota').value, institucion:institucionSesion() }); localStorage.setItem('calificaciones', JSON.stringify(calificaciones)); $('notaMensaje').textContent = 'Calificación guardada.'; $('materia').value = ''; renderProfesor(); renderResumenAdmin(); });
 		$('sesionForm').addEventListener('submit', e => { e.preventDefault(); const sesion = { id: Date.now(), titulo: $('sesionTitulo').value.trim(), fecha: $('sesionFecha').value, aula: $('sesionAula').value.trim(), descripcion: $('sesionDescripcion').value.trim(), institucion:institucionSesion() }; sesiones.push(sesion); guardarSesiones(); renderSesionesProfesor(); renderResumenAdmin(); $('sesionForm').reset(); $('sesionMensaje').textContent = 'Sesión creada correctamente.'; });
 			$('anuncioForm').addEventListener('submit', e => { e.preventDefault(); const titulo = $('anuncioTitulo').value.trim(); const texto = $('anuncioTexto').value.trim(); const autor = usuarioSesion(); if (!titulo || !texto || !autor) return $('anuncioMensaje').textContent = 'Completa los campos del anuncio.'; anuncios.push({ id: Date.now().toString(), titulo, texto, autor:autor.nombre, rol:autor.rol, institucion:institucionSesion(), fecha:new Date().toLocaleDateString('es-ES') }); localStorage.setItem('anuncios', JSON.stringify(anuncios)); $('anuncioForm').reset(); renderAnuncios('inicioAnunciosProfesor', 3); renderAnuncios('listaNotificacionesProfesor'); actualizarNotificaciones(); $('anuncioMensaje').textContent = 'Anuncio publicado.'; });
 			$('adminAnuncioForm').addEventListener('submit', e => { e.preventDefault(); const titulo = $('adminAnuncioTitulo').value.trim(); const texto = $('adminAnuncioTexto').value.trim(); const autor = usuarioSesion(); if (!titulo || !texto || !autor) return $('adminAnuncioMensaje').textContent = 'Completa los campos del anuncio.'; anuncios.push({ id: Date.now().toString(), titulo, texto, autor:autor.nombre, rol:autor.rol, institucion:institucionSesion(), fecha:new Date().toLocaleDateString('es-ES') }); localStorage.setItem('anuncios', JSON.stringify(anuncios)); $('adminAnuncioForm').reset(); renderAnuncios('inicioAnunciosAdmin', 3); renderAnuncios('listaNotificacionesAdmin'); actualizarNotificaciones(); $('adminAnuncioMensaje').textContent = 'Anuncio publicado.'; });
