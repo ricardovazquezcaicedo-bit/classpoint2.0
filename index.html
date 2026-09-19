@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>ClassPoint</title>
+	<title>ClassPoint — Plataforma educativa</title>
 	<style>
 		:root {
 			--primary:#234d78;
@@ -467,16 +467,551 @@
 		}
 		.site-header.app-header:hover,
 		.site-header.app-header:focus-within { transform:translateY(0); }
-	</style>
+	
+/* Insignias de ClassPoint */
+.logros-intro { margin-top: -8px; color: #5f6b7a; }
+.insignias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 16px 0 24px;
+}
+.insignia-card {
+    border: 1px solid #dfe5ec;
+    border-radius: 16px;
+    padding: 18px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(0,0,0,.05);
+    position: relative;
+}
+.insignia-card.desbloqueada { border-color: #b9d9c2; }
+.insignia-card.bloqueada { opacity: .72; background: #f7f8fa; }
+.insignia-icono {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 30px;
+    margin-bottom: 10px;
+    background: #f0f3f7;
+}
+.insignia-card.desbloqueada .insignia-icono { background: #fff2bd; }
+.insignia-card h4 { margin: 4px 0 6px; font-size: 18px; }
+.insignia-card p { margin: 6px 0; }
+.insignia-requisito { font-size: 14px; color: #5f6b7a; }
+.insignia-estado {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #eef1f4;
+}
+.insignia-card.desbloqueada .insignia-estado { background: #dff3e5; }
+.subtitulo-logros { margin-top: 10px; }
+
+
+/* Asistente ClassPoint mejorado */
+.ai-assistant-title { display:flex; flex-direction:column; gap:3px; margin-bottom:10px; }
+.ai-assistant-title small { color:var(--muted); font-size:.78rem; }
+.ai-assistant-suggestions { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.assistant-suggestion { border:1px solid #d9e5eb; background:#f7fafc; color:var(--dark); padding:7px 10px; border-radius:999px; font-size:.78rem; cursor:pointer; }
+.assistant-suggestion:hover { background:var(--accent-soft); }
+.ai-message { white-space:pre-line; }
+
+	
+/* =========================================================
+   CLASSPOINT — REDISEÑO MODERNO
+   Capa visual: conserva el contenido y la lógica existentes.
+   ========================================================= */
+:root{
+  --cp-bg:#f5f7fb;
+  --cp-surface:#ffffff;
+  --cp-surface-2:#f8fafc;
+  --cp-ink:#111827;
+  --cp-muted:#64748b;
+  --cp-line:#e5eaf1;
+  --cp-primary:#635bff;
+  --cp-primary-2:#4f46e5;
+  --cp-cyan:#16b8c4;
+  --cp-green:#20b486;
+  --cp-warning:#f59e0b;
+  --cp-danger:#ef5b6b;
+  --cp-dark:#171a2b;
+  --cp-shadow:0 12px 30px rgba(15,23,42,.07);
+  --cp-shadow-lg:0 24px 60px rgba(15,23,42,.12);
+  --cp-radius:18px;
+}
+
+html{background:var(--cp-bg);}
+body{
+  background:
+    radial-gradient(circle at 0% 0%,rgba(99,91,255,.07),transparent 28rem),
+    radial-gradient(circle at 100% 10%,rgba(22,184,196,.06),transparent 24rem),
+    var(--cp-bg);
+  color:var(--cp-ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height:1.5;
+}
+button,input,select,textarea{font-family:inherit;}
+button{transition:transform .16s ease,box-shadow .16s ease,background .16s ease,border-color .16s ease;}
+button:hover{transform:translateY(-1px);}
+.container{max-width:1280px;}
+main{max-width:1280px;margin:22px auto 42px;padding:0 20px;}
+
+/* Header / brand */
+.site-header{
+  background:rgba(255,255,255,.88);
+  color:var(--cp-ink);
+  border-bottom:1px solid var(--cp-line);
+  box-shadow:0 4px 24px rgba(15,23,42,.05);
+  padding:10px 0;
+  position:sticky;
+  top:0;
+  z-index:20;
+  overflow:visible;
+  backdrop-filter:blur(18px);
+}
+.site-header::before{display:none;}
+.site-header.app-header{padding:10px 0;}
+.nav{min-height:58px;}
+.brand-area{gap:22px;}
+.modern-logo{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:var(--cp-dark);
+  letter-spacing:-.04em;
+}
+.modern-logo-mark{
+  width:43px;height:43px;border-radius:13px;
+  display:grid;place-items:center;
+  background:linear-gradient(145deg,#6f67ff,#16b8c4);
+  box-shadow:0 9px 20px rgba(99,91,255,.22);
+}
+.modern-logo-mark svg{width:30px;height:30px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}
+.modern-logo-mark .logo-line{stroke:#fff;}
+.modern-logo-mark .logo-dot{fill:#fff;stroke:none;}
+.modern-logo-text{font-size:1.38rem;font-weight:850;}
+.modern-logo-text span{color:var(--cp-primary);}
+.logo{font-size:1.38rem;}
+.nav-links{color:var(--cp-muted);}
+.top-app-nav{gap:5px;}
+.top-app-nav button{
+  color:var(--cp-muted);
+  background:transparent;
+  border:1px solid transparent;
+  border-radius:11px;
+  padding:9px 11px;
+  font-weight:650;
+}
+.top-app-nav button:hover,
+.top-app-nav button.activo{
+  background:#f0efff;
+  color:var(--cp-primary);
+  border-color:#e2e0ff;
+}
+.top-user-actions{gap:9px;}
+.top-welcome{color:var(--cp-muted);}
+.avatar{border:2px solid #fff;box-shadow:0 2px 8px rgba(15,23,42,.12);}
+.top-user-actions .top-logout,
+.top-app-nav .top-logout{
+  background:var(--cp-dark);
+  border:0;
+  color:#fff;
+  border-radius:11px;
+  padding:9px 13px;
+  box-shadow:none;
+}
+.notification-button{background:#fff!important;color:var(--cp-dark)!important;border:1px solid var(--cp-line)!important;}
+
+/* Login / hero */
+.login-shell{
+  min-height:calc(100vh - 80px);
+  padding:55px 20px;
+  position:relative;
+}
+.login-shell::before{
+  content:"";
+  position:absolute;
+  width:480px;height:480px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(99,91,255,.14),transparent 65%);
+  left:-140px;top:40px;pointer-events:none;
+}
+.login-card{
+  width:min(100%,460px);
+  padding:30px;
+  border:1px solid rgba(226,232,240,.9);
+  border-radius:24px;
+  background:rgba(255,255,255,.92);
+  box-shadow:var(--cp-shadow-lg);
+}
+.login-card h2{
+  font-size:1.85rem;
+  letter-spacing:-.04em;
+  margin:0 0 5px;
+  color:var(--cp-dark);
+}
+.login-card form{margin-top:18px;}
+.login-card label{color:#475569;font-weight:700;font-size:.86rem;margin-top:14px;}
+.login-card input,
+.login-card select{
+  border:1px solid #dbe2ea;
+  border-radius:12px;
+  background:#fff;
+  padding:12px 13px;
+  outline:none;
+  box-shadow:none;
+}
+.login-card input:focus,
+.login-card select:focus{
+  border-color:#aaa6ff;
+  box-shadow:0 0 0 4px rgba(99,91,255,.10);
+}
+.login-card button{
+  width:100%;
+  border:0;
+  border-radius:12px;
+  padding:12px 14px;
+  margin-top:16px;
+  background:linear-gradient(135deg,var(--cp-primary),var(--cp-primary-2));
+  color:#fff;
+  font-weight:800;
+  box-shadow:0 9px 20px rgba(99,91,255,.20);
+}
+.login-card .secondary{
+  background:#f1f3f7!important;
+  color:var(--cp-dark)!important;
+  box-shadow:none!important;
+  border:1px solid var(--cp-line)!important;
+}
+
+/* Cards and content */
+.card,.feature-card{
+  background:rgba(255,255,255,.96);
+  border:1px solid var(--cp-line);
+  border-radius:var(--cp-radius);
+  box-shadow:var(--cp-shadow);
+}
+.card{padding:20px;margin-bottom:16px;}
+.feature-card{padding:20px;}
+.card h1,.card h2,.card h3,.feature-card h3{
+  color:var(--cp-dark);
+  letter-spacing:-.025em;
+}
+.card h2{font-size:1.35rem;}
+.card h3,.feature-card h3{font-size:1rem;}
+input,select,textarea{
+  border:1px solid #dbe2ea;
+  border-radius:11px;
+  background:#fff;
+  padding:10px 12px;
+}
+input:focus,select:focus,textarea:focus{
+  outline:none;
+  border-color:#aaa6ff;
+  box-shadow:0 0 0 4px rgba(99,91,255,.08);
+}
+button{
+  border:0;
+  border-radius:11px;
+  background:var(--cp-primary);
+  color:#fff;
+  padding:10px 14px;
+  font-weight:750;
+}
+button.secondary,
+.secondary{
+  background:#f1f3f7;
+  color:#334155;
+  border:1px solid var(--cp-line);
+}
+button.danger{background:#fff0f1;color:#c73d50;border:1px solid #ffd5da;}
+button.success{background:#eafaf4;color:#13835f;border:1px solid #c8f0e1;}
+
+/* Dashboard grids */
+.feature-grid{gap:18px;margin-top:20px;}
+.feature-card{
+  min-height:130px;
+  position:relative;
+  overflow:hidden;
+}
+.feature-card::after{
+  content:"";
+  position:absolute;
+  width:100px;height:100px;
+  border-radius:50%;
+  right:-35px;bottom:-45px;
+  background:linear-gradient(135deg,rgba(99,91,255,.10),rgba(22,184,196,.08));
+}
+.hero{
+  min-height:240px;
+  padding:34px 0;
+}
+.hero-copy h1{font-size:clamp(2.3rem,4vw,4.1rem);color:#fff;}
+.hero-copy p{color:rgba(255,255,255,.82);}
+.hero-points{color:#e9e7ff;}
+.hero-actions button{border-radius:12px;}
+
+/* Tables */
+table{border-collapse:separate!important;border-spacing:0;width:100%;overflow:hidden;border:1px solid var(--cp-line);border-radius:14px;background:#fff;}
+th{
+  background:#f8fafc!important;
+  color:#64748b!important;
+  font-size:.76rem!important;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+th,td{border-bottom:1px solid var(--cp-line)!important;padding:11px 12px!important;}
+tr:last-child td{border-bottom:0!important;}
+tr:hover td{background:#fafbff;}
+
+/* Pills / badges */
+.badge,.pill,.tag,.status{
+  border-radius:999px!important;
+  font-weight:750!important;
+}
+.badge{padding:5px 9px!important;}
+.status{padding:5px 9px!important;background:#f1f5f9!important;color:#475569!important;}
+
+/* Assistant */
+.ai-assistant{
+  right:22px;bottom:22px;width:min(390px,calc(100vw - 28px));
+  border:1px solid #e0e5ed;
+  border-radius:20px;
+  box-shadow:0 24px 70px rgba(15,23,42,.18);
+  background:rgba(255,255,255,.97);
+  backdrop-filter:blur(18px);
+}
+.ai-assistant-toggle{
+  background:linear-gradient(135deg,var(--cp-primary),#7c73ff)!important;
+  color:#fff!important;
+  padding:14px 16px!important;
+  font-weight:800;
+}
+.ai-assistant-body{padding:16px;}
+.ai-assistant-title strong{color:var(--cp-dark);}
+.ai-assistant-title small{color:var(--cp-muted);}
+.ai-assistant-messages{max-height:280px;}
+.ai-message{
+  background:#f5f4ff;
+  border:1px solid #e8e5ff;
+  color:#334155;
+  border-radius:14px;
+}
+.ai-message.user{background:#eef9fa;border-color:#d9f2f4;}
+.ai-assistant-suggestions{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0;}
+.ai-assistant-suggestions button{
+  background:#f6f7f9;
+  color:#475569;
+  border:1px solid #e3e7ed;
+  font-size:.78rem;
+  padding:7px 9px;
+}
+.ai-assistant-form input{border-radius:12px;}
+.ai-assistant-form button{background:var(--cp-primary);}
+
+/* Badges / achievements */
+.achievement-card,.logro-card{
+  border:1px solid var(--cp-line)!important;
+  background:linear-gradient(180deg,#fff,#fafbff)!important;
+  border-radius:16px!important;
+  box-shadow:none!important;
+}
+.achievement-card:hover,.logro-card:hover{
+  border-color:#d6d3ff!important;
+  box-shadow:0 10px 24px rgba(99,91,255,.08)!important;
+}
+
+/* Floating accents / section headings */
+section.card > h2:first-child{margin-top:0;}
+.panel-title,.section-title{font-weight:850;color:var(--cp-dark);}
+hr{border:0;border-top:1px solid var(--cp-line);}
+
+/* Make existing colorful elements feel consistent */
+[style*="background:#234d78"],
+[style*="background: #234d78"]{background:var(--cp-primary)!important;}
+[style*="background:#50c6b3"],
+[style*="background: #50c6b3"]{background:var(--cp-cyan)!important;}
+
+/* Responsive */
+@media (max-width:980px){
+  .brand-area{gap:12px;}
+  .top-app-nav{order:3;width:100%;overflow:auto;flex-wrap:nowrap;padding-bottom:3px;}
+  .nav{flex-wrap:wrap;}
+  .top-user-actions{margin-left:auto;}
+  .hero{grid-template-columns:1fr;min-height:auto;}
+}
+@media (max-width:700px){
+  .site-header{position:relative;}
+  .container,main{padding-left:12px;padding-right:12px;}
+  .login-shell{padding:30px 12px;min-height:calc(100vh - 70px);}
+  .login-card{padding:22px 18px;border-radius:20px;}
+  .modern-logo-text{font-size:1.18rem;}
+  .modern-logo-mark{width:39px;height:39px;}
+  .top-welcome{display:none;}
+  .top-app-nav button{font-size:.78rem;padding:8px 9px;}
+  .card{padding:15px;}
+  .feature-grid{grid-template-columns:1fr;}
+  table{font-size:.82rem;}
+  th,td{padding:9px 8px!important;}
+  .ai-assistant{right:12px;bottom:12px;}
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;}
+}
+
+
+/* =========================================================
+   CLASSPOINT — VISTA COMPACTA EN 2 FILAS
+   Reduce desplazamiento vertical sin eliminar información.
+   ========================================================= */
+main{
+  max-width:1400px!important;
+  margin:14px auto 28px!important;
+  padding:0 16px!important;
+}
+.card{
+  margin-bottom:10px!important;
+  padding:15px!important;
+}
+.feature-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:12px!important;
+}
+.feature-card{
+  min-height:105px!important;
+  padding:15px!important;
+}
+.feature-card h3{margin:0 0 5px!important;}
+.feature-card p{margin:0!important;font-size:.88rem!important;}
+
+/* Contenedores principales de paneles en dos columnas */
+.dashboard-grid,
+.panel-grid,
+.admin-grid,
+.profesor-grid,
+.student-grid,
+.content-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.65fr) minmax(280px,.85fr);
+  gap:12px;
+  align-items:start;
+}
+
+/* Cuando existen muchas tarjetas seguidas, usar cuatro columnas */
+.stats-grid,
+.metric-grid,
+.quick-grid,
+.tools-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+
+/* Tablas más compactas */
+table{
+  font-size:.86rem!important;
+}
+th,td{
+  padding:8px 9px!important;
+}
+
+/* Formularios compactos */
+form{
+  gap:8px!important;
+}
+label{
+  margin-bottom:3px!important;
+}
+
+/* Encabezados de sección */
+.card h2{
+  font-size:1.18rem!important;
+  margin:0 0 9px!important;
+}
+.card h3{
+  font-size:.98rem!important;
+  margin:8px 0 6px!important;
+}
+
+/* En pantallas grandes, juntar bloques consecutivos para reducir scroll */
+@media (min-width:1050px){
+  main > .card{
+    display:block;
+  }
+  .feature-grid + .card{
+    margin-top:10px!important;
+  }
+}
+
+/* Pantallas medianas */
+@media (max-width:1100px){
+  .feature-grid,
+  .stats-grid,
+  .metric-grid,
+  .quick-grid,
+  .tools-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .dashboard-grid,
+  .panel-grid,
+  .admin-grid,
+  .profesor-grid,
+  .student-grid,
+  .content-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+/* Celular */
+@media (max-width:650px){
+  main{
+    padding:0 10px!important;
+  }
+  .feature-grid,
+  .stats-grid,
+  .metric-grid,
+  .quick-grid,
+  .tools-grid{
+    grid-template-columns:1fr!important;
+  }
+  .card{
+    padding:13px!important;
+  }
+}
+
+/* Evitar que bloques internos altos generen espacio innecesario */
+.card > :last-child{
+  margin-bottom:0;
+}
+
+</style>
 </head>
 <body>
 	<header class="site-header">
 		<nav class="nav container">
 			<div class="brand-area">
-				<div class="logo"><span class="logo-mark"><span>CP</span></span><span>ClassPoint</span></div>
+				<a class="logo modern-logo" href="#" aria-label="ClassPoint">
+  <span class="modern-logo-mark" aria-hidden="true">
+    <svg viewBox="0 0 48 48" role="img">
+      <path d="M14 8h20a6 6 0 0 1 6 6v14a6 6 0 0 1-6 6H22l-7 6v-6h-1a6 6 0 0 1-6-6V14a6 6 0 0 1 6-6Z"/>
+      <path d="M16 17h16M16 24h11" class="logo-line"/>
+      <circle cx="33" cy="29" r="3.2" class="logo-dot"/>
+    </svg>
+  </span>
+  <span class="modern-logo-text">Class<span>Point</span></span>
+</a>
 				<div id="topAppNav" class="top-app-nav hidden">
-					<div id="topStudentNav" class="top-role-nav hidden"><button type="button" data-top-panel="inicioPanel">Inicio</button><button type="button" data-top-panel="materiasPanel">Materias</button><button type="button" data-top-panel="aulasPanel">Aulas</button><button type="button" data-top-panel="tareasPanel">Tareas</button><button type="button" data-top-panel="evidenciasPanel">Evidencias</button><button type="button" data-top-panel="monedasPanel">Mercado</button><button type="button" data-top-panel="rankingPanel">Ranking</button><button type="button" data-top-panel="manualPanel">Manual de uso</button><button type="button" data-top-panel="perfilPanel">Perfil</button></div>
-					<div id="topTeacherNav" class="top-role-nav hidden"><button type="button" data-top-panel="profesorInicio">Inicio</button><button type="button" data-top-panel="profesorInicio">Aulas</button><button type="button" data-top-panel="profesorTareas">Tareas</button><button type="button" data-top-panel="profesorEvidencias">Evidencias</button><button type="button" data-top-panel="profesorMonedas">ClassCoins</button><button type="button" data-top-panel="profesorRanking">Ranking</button><button type="button" data-top-panel="profesorManual">Manual de uso</button><button type="button" data-top-panel="profesorPerfil">Perfil</button></div>
+					<div id="topStudentNav" class="top-role-nav hidden"><button type="button" data-top-panel="inicioPanel">Inicio</button><button type="button" data-top-panel="materiasPanel">Materias</button><button type="button" data-top-panel="aulasPanel">Aulas</button><button type="button" data-top-panel="tareasPanel">Tareas</button><button type="button" data-top-panel="evidenciasPanel">Evidencias</button><button type="button" data-top-panel="logrosPanel">Logros</button><button type="button" data-top-panel="monedasPanel">Mercado</button><button type="button" data-top-panel="rankingPanel">Ranking</button><button type="button" data-top-panel="chismografoPanel">El Chismógrafo</button><button type="button" data-top-panel="manualPanel">Manual de uso</button><button type="button" data-top-panel="perfilPanel">Perfil</button></div>
+					<div id="topTeacherNav" class="top-role-nav hidden"><button type="button" data-top-panel="profesorInicio">Inicio</button><button type="button" data-top-panel="profesorInicio">Aulas</button><button type="button" data-top-panel="profesorTareas">Tareas</button><button type="button" data-top-panel="profesorEvidencias">Evidencias</button><button type="button" data-top-panel="profesorAsistencia">Asistencia</button><button type="button" data-top-panel="profesorMonedas">ClassCoins</button><button type="button" data-top-panel="profesorRanking">Ranking</button><button type="button" data-top-panel="profesorManual">Manual de uso</button><button type="button" data-top-panel="profesorPerfil">Perfil</button></div>
 					<div id="topAdminNav" class="top-role-nav hidden"><button type="button" data-top-panel="adminInicio">Inicio</button><button type="button" data-top-panel="adminClases">Aulas</button><button type="button" data-top-panel="adminPersonas">Personas</button><button type="button" data-top-panel="adminMercado">Mercado</button><button type="button" id="topInstituciones" class="hidden" data-top-panel="adminInstituciones">Instituciones</button><button type="button" data-top-panel="adminManual">Manual de uso</button><button type="button" data-top-panel="adminPerfil">Perfil</button></div>
 				</div>
 				<div id="topUserActions" class="top-user-actions hidden"><span id="topAvatar"></span><span id="topWelcome" class="top-welcome"></span><button type="button" class="notification-button" data-top-panel="notificacionesPanel" aria-label="Notificaciones"><span class="bell-icon"></span><span class="notification-count">0</span></button><button type="button" class="top-logout salir">Salir</button></div>
@@ -516,6 +1051,13 @@
 	</header>
 
 	<main>
+        <div id="quickTools" class="quick-tools hidden">
+            <div class="quick-search">
+                <span aria-hidden="true">🔎</span>
+                <input id="globalSearch" type="search" placeholder="Buscar tareas, materias, aulas, estudiantes..." autocomplete="off">
+            </div>
+            <button type="button" id="quickSearchClear" class="secondary">Limpiar</button>
+        </div>
 
 		<div class="app-shell">
 			<section id="estudiante" class="card hidden">
@@ -526,6 +1068,8 @@
 					<div class="quick-grid">
 						<div class="metric-card"><span>Asistencia</span><strong id="statAsistencia">0%</strong></div>
 						<div class="metric-card"><span>Logros</span><strong id="statLogros">0</strong></div>
+                        <div class="metric-card"><span>Promedio</span><strong id="statPromedio">—</strong></div>
+                        <div class="metric-card"><span>Tareas pendientes</span><strong id="statTareasPendientes">0</strong></div>
 					</div>
 					<div class="inicio-layout"><aside id="listaMaterias" class="barra-materias"></aside><div id="detalleMateria" class="detalle-materia"><p>Selecciona una materia para ver sus calificaciones.</p></div></div>
 				</div>
@@ -554,9 +1098,31 @@
 					<div id="listaAulasEstudiante" class="list-simple"></div>
 					<div id="calificacionesAula" class="detalle-materia"><p>Selecciona un aula para consultar sus calificaciones.</p></div>
 				</div>
-				<div id="logrosPanel" class="panel"><h2>Mis logros</h2><div id="listaLogrosEstudiante" class="list-simple"></div></div>
+				<div id="logrosPanel" class="panel">
+    <h2>🏆 Mis logros e insignias</h2>
+    <p class="logros-intro">Completa diferentes retos para desbloquear insignias. En cada una puedes ver exactamente qué debes hacer.</p>
+    <h3>Insignias</h3>
+    <div id="listaInsigniasEstudiante" class="insignias-grid"></div>
+    <h3 class="subtitulo-logros">Logros obtenidos</h3>
+    <div id="listaLogrosEstudiante" class="list-simple"></div>
+</div>
 				<div id="monedasPanel" class="panel"><p class="monedas"><span class="classcoin-icon" aria-label="Moneda CC">CC</span><span id="saldo">0</span> ClassCoins</p><h2>Tienda de recompensas</h2><div class="tienda"><div id="mercadoEstudiante" class="tienda"></div></div><p id="tiendaMensaje" class="success"></p></div>
 				<div id="rankingPanel" class="panel"><h2>Ranking del salón</h2><p>Consulta la clasificación de estudiantes de tu institución según sus ClassCoins.</p><table><thead><tr><th>Posición</th><th>Estudiante</th><th>ClassCoins</th></tr></thead><tbody id="ranking"></tbody></table></div>
+                <div id="chismografoPanel" class="panel">
+                    <h2>🗣️ El Chismógrafo</h2>
+                    <p>Comparte anécdotas, rumores divertidos y novedades del salón con respeto. No publiques datos privados, insultos ni acusaciones.</p>
+                    <form id="chismografoForm" class="formulario-pequeno">
+                        <label for="chismografoConQuien">¿Con quién quieres chismear?</label>
+                        <select id="chismografoConQuien" required>
+                            <option value="">Selecciona un compañero o compañera</option>
+                        </select>
+                        <label for="chismografoTexto">¿Qué se cuenta hoy?</label>
+                        <textarea id="chismografoTexto" rows="3" maxlength="500" placeholder="Escribe tu chisme o novedad de forma respetuosa..." required></textarea>
+                        <button type="submit">Publicar chisme</button>
+                        <p id="chismografoMensaje" class="success"></p>
+                    </form>
+                    <div id="listaChismografo" class="list-simple"></div>
+                </div>
 				<div id="perfilPanel" class="panel"><h2>Mi perfil</h2><div id="perfilAvatarEstudiante"></div><p id="nombrePerfil"></p><form id="perfilDatosEstudianteForm" class="formulario-pequeno"><label for="perfilTardesEstudiante">¿Qué haces por las tardes?</label><input id="perfilTardesEstudiante" placeholder="Ej. Entreno fútbol o estudio música" required><label for="perfilInteresesEstudiante">Mis intereses</label><input id="perfilInteresesEstudiante" placeholder="Ej. Ciencia, dibujo y videojuegos" required><label for="perfilDescripcionEstudiante">Sobre mí</label><textarea id="perfilDescripcionEstudiante" rows="3" placeholder="Cuéntale algo a tu comunidad" required></textarea><button type="submit">Guardar información</button><p id="perfilDatosEstudianteMensaje" class="success"></p></form><form id="fotoPerfilEstudianteForm" class="formulario-pequeno"><label for="fotoPerfilEstudiante">Foto de perfil</label><input id="fotoPerfilEstudiante" type="file" accept="image/*" required><button type="submit">Guardar foto</button><p id="fotoPerfilEstudianteMensaje" class="success"></p></form><form id="contrasenaForm"><label for="nuevaContrasena">Nueva contraseña</label><input id="nuevaContrasena" type="password" minlength="4" required autocomplete="new-password"><button type="submit">Cambiar contraseña</button><p id="contrasenaMensaje" class="success"></p></form></div>
 				<div id="manualPanel" class="panel"><h2>Manual de uso</h2><div class="list-simple"><div class="list-item"><strong>Materias</strong><p>Abre el botón Materias para consultar tus asignaturas. Selecciona una materia para ver tus calificaciones.</p></div><div class="list-item"><strong>Aulas</strong><p>En Aulas puedes ingresar con el código que te entregue tu profesor. Después selecciona un aula para consultar sus calificaciones.</p></div><div class="list-item"><strong>Tareas y evidencias</strong><p>Revisa tus tareas, marca las entregas y sube archivos o enlaces desde Evidencias.</p></div><div class="list-item"><strong>ClassCoins</strong><p>Consulta tus ClassCoins y canjea recompensas disponibles en la tienda.</p></div><div class="list-item"><strong>Perfil</strong><p>Desde Perfil puedes cambiar tu contraseña.</p></div></div></div>
 				<button class="secondary salir">Cerrar sesión</button>
@@ -788,9 +1354,74 @@
 			</section>
 		</div>
 	</main>
-	<div id="aiAssistant" class="ai-assistant hidden"><button id="aiAssistantToggle" class="ai-assistant-toggle" type="button">Asistente ClassPoint</button><div id="aiAssistantBody" class="ai-assistant-body hidden"><div id="aiAssistantMessages" class="ai-assistant-messages"><div class="ai-message">Hola. Puedo ayudarte con aulas, materias, tareas, ClassCoins e instituciones.</div></div><form id="aiAssistantForm" class="ai-assistant-form"><input id="aiAssistantInput" placeholder="Escribe tu pregunta" autocomplete="off" required><button type="submit">Enviar</button></form></div></div>
+<style>
+.ai-assistant{width:min(410px,calc(100vw - 24px));border:1px solid #cfe4e8;background:#fbfefe}
+.ai-assistant-toggle{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 15px;font-size:.98rem}
+.ai-assistant-toggle::after{content:"⌄";font-size:1.1rem}
+.ai-assistant-body{padding:12px}
+.ai-assistant-title{display:flex;flex-direction:column;gap:3px;margin-bottom:10px}
+.ai-assistant-title strong{color:var(--dark);font-size:1.05rem}
+.ai-assistant-title small{color:var(--muted)}
+.ai-assistant-messages{max-height:290px;min-height:120px;padding:2px;scrollbar-width:thin}
+.ai-message{white-space:pre-line;border:1px solid #dcebec}
+.ai-message.user{background:#e4f3f4;border-color:#c9e5e6}
+.ai-assistant-suggestions{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.assistant-suggestion{width:auto;margin:0;padding:7px 9px;background:#edf7f7;color:var(--primary-dark);box-shadow:none;font-size:.78rem}
+.assistant-suggestion:hover{background:var(--accent-soft);box-shadow:none}
+.ai-assistant-form{align-items:center;border-top:1px solid #e7eeee;padding-top:9px}
+.ai-assistant-form input{border-radius:10px}
+.ai-assistant-form button{width:auto;margin:0}
+.ai-result-actions{display:flex;gap:6px;margin-top:7px}
+.ai-result-actions button{width:auto;margin:0;padding:6px 8px;font-size:.75rem}
+.ai-typing{opacity:.7;font-style:italic}
+</style>
+
+	<div id="aiAssistant" class="ai-assistant hidden">
+    <button id="aiAssistantToggle" class="ai-assistant-toggle" type="button">🤖 Asistente ClassPoint <span aria-hidden="true">•</span></button>
+    <div id="aiAssistantBody" class="ai-assistant-body hidden">
+        <div class="ai-assistant-title">
+            <strong>Asistente ClassPoint</strong>
+            <small>Pregunta, busca o pide ayuda con tu plataforma</small>
+        </div>
+        <div id="aiAssistantMessages" class="ai-assistant-messages">
+            <div class="ai-message">¡Hola! 👋 Soy el Asistente ClassPoint. Puedo consultar tu información, buscar dentro de la plataforma y llevarte a la sección correcta.</div>
+        </div>
+        <div class="ai-assistant-suggestions">
+            <button type="button" class="assistant-suggestion" data-question="¿Cuál es mi promedio?">📊 Mi promedio</button>
+            <button type="button" class="assistant-suggestion" data-question="Buscar mis tareas">🔎 Buscar tareas</button>
+            <button type="button" class="assistant-suggestion" data-question="¿Qué insignias puedo ganar?">🏆 Mis insignias</button>
+        </div>
+        <form id="aiAssistantForm" class="ai-assistant-form">
+            <input id="aiAssistantInput" placeholder="Escribe una pregunta o algo que quieras buscar..." autocomplete="off" required>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</div>
 	<script>
 		const normalizarTexto = valor => String(valor ?? '').trim().toLowerCase();
+
+        function actualizarMetricasEstudiante(usuario) {
+            if (!usuario) return;
+            const notas = calificaciones.filter(n => n.usuario === usuario.usuario && perteneceInstitucion(n));
+            const promedio = notas.length
+                ? (notas.reduce((s, n) => s + Number(n.nota || 0), 0) / notas.length).toFixed(1)
+                : '—';
+            const pendientes = tareas.filter(t => t.usuario === usuario.usuario && t.estado !== 'entregada').length;
+            if ($('statPromedio')) $('statPromedio').textContent = promedio;
+            if ($('statTareasPendientes')) $('statTareasPendientes').textContent = pendientes;
+            if ($('statAsistencia')) $('statAsistencia').textContent = calcularAsistencia(usuario) + '%';
+            if ($('statLogros')) $('statLogros').textContent = logros.filter(l => l.usuario === usuario.usuario).length;
+        }
+
+        function activarBusquedaGlobal() {
+            // La búsqueda ahora está integrada directamente en el Asistente ClassPoint.
+        }
+
+        function mostrarHerramientasRapidas(mostrar) {
+            const assistant = $('aiAssistant');
+            if (assistant) assistant.classList.toggle('hidden', !mostrar);
+        }
+
 		const leerJSON = (clave, valorInicial) => {
 			try {
 				const valor = localStorage.getItem(clave);
@@ -868,19 +1499,158 @@
 		localStorage.setItem('materias', JSON.stringify(materias)); localStorage.setItem('aulas', JSON.stringify(aulas)); localStorage.setItem('calificaciones', JSON.stringify(calificaciones)); localStorage.setItem('tareas', JSON.stringify(tareas)); localStorage.setItem('sesiones', JSON.stringify(sesiones)); localStorage.setItem('evidencias', JSON.stringify(evidencias)); localStorage.setItem('asistencia', JSON.stringify(asistencia));
 		localStorage.setItem('productos', JSON.stringify(productos));
 		const $ = id => document.getElementById(id);
-		function responderAsistente(pregunta) {
-			const texto = normalizarTexto(pregunta); const usuario = usuarioSesion();
-			if (texto.includes('aula') || texto.includes('codigo')) return 'Para entrar a un aula, abre Aulas, escribe el código que te dio el profesor y pulsa Ingresar al aula. Después selecciona el aula para ver sus materias.';
-			if (texto.includes('materia') || texto.includes('calificacion') || texto.includes('nota')) return usuario?.rol === 'profesor' ? 'Desde Inicio puedes elegir un estudiante, aula y materia para guardar una calificación.' : 'En Materias selecciona una materia para consultar tus calificaciones.';
-			if (texto.includes('tarea') || texto.includes('evidencia')) return usuario?.rol === 'estudiante' ? 'En Tareas revisa tus entregas. En Evidencias puedes subir un archivo o enlace.' : 'En Tareas crea actividades y en Evidencias revisa los trabajos enviados.';
-			if (texto.includes('coin') || texto.includes('mercado') || texto.includes('compr')) return usuario?.rol === 'profesor' ? 'Desde ClassCoins selecciona un estudiante, una materia y una cantidad para entregar monedas.' : 'En Mercado puedes consultar recompensas y comprar usando tus ClassCoins.';
-			if (texto.includes('institucion') || texto.includes('administrador')) return esCreadorOriginal() ? 'En Instituciones puedes ver miembros, roles, modificar nombres, quitar administradores y eliminar instituciones vacías.' : 'Tu cuenta solo puede trabajar dentro de la institución asignada.';
-			if (texto.includes('perfil') || texto.includes('foto')) return 'En Perfil puedes guardar tu foto, intereses, actividad de la tarde, descripción y contraseña.';
-			return 'Puedo orientarte sobre aulas, materias, calificaciones, tareas, evidencias, ClassCoins, Mercado, Perfil e instituciones.';
+
+		function obtenerInsigniasAsistente(usuario) {
+			if (!usuario || usuario.rol !== 'estudiante') return [];
+			const tareasUsuario = tareas.filter(t => t.usuario === usuario.usuario);
+			const completadas = tareasUsuario.filter(t => ['completada','entregada'].includes(normalizarTexto(t.estado))).length;
+			const notasUsuario = calificaciones.filter(n => n.usuario === usuario.usuario && perteneceInstitucion(n));
+			const promedio = notasUsuario.length ? notasUsuario.reduce((s,n) => s + Number(n.nota || 0), 0) / notasUsuario.length : 0;
+			const registros = asistencia.filter(a => a.usuario === usuario.usuario);
+			const asistenciaPct = calcularAsistencia(usuario);
+			const evidenciasUsuario = evidencias.filter(e => e.usuario === usuario.usuario);
+			const aprobadas = evidenciasUsuario.filter(e => normalizarTexto(e.estado) === 'aprobada').length;
+			return [
+				['🚀 Primera entrega','Completa tu primera tarea.',completadas >= 1],
+				['📚 Constancia','Completa 3 tareas.',completadas >= 3],
+				['⭐ Excelencia académica','Ten promedio de 4.5 o más con al menos 3 notas.',notasUsuario.length >= 3 && promedio >= 4.5],
+				['🗓️ Siempre presente','Alcanza 90% o más de asistencia con al menos 5 registros.',registros.length >= 5 && asistenciaPct >= 90],
+				['📎 Manos a la obra','Sube tu primera evidencia.',evidenciasUsuario.length >= 1],
+				['🏅 Trabajo destacado','Consigue 3 evidencias aprobadas.',aprobadas >= 3]
+			];
 		}
-		function agregarMensajeAsistente(texto, esUsuario = false) { const mensajes = $('aiAssistantMessages'); const mensaje = document.createElement('div'); mensaje.className = `ai-message${esUsuario ? ' user' : ''}`; mensaje.textContent = texto; mensajes.appendChild(mensaje); mensajes.scrollTop = mensajes.scrollHeight; }
-		$('aiAssistantToggle').addEventListener('click', () => $('aiAssistantBody').classList.toggle('hidden'));
-		$('aiAssistantForm').addEventListener('submit', e => { e.preventDefault(); const entrada = $('aiAssistantInput'); const pregunta = entrada.value.trim(); if (!pregunta) return; agregarMensajeAsistente(pregunta, true); agregarMensajeAsistente(responderAsistente(pregunta)); entrada.value = ''; });
+
+		function asistenteIrA(panel) {
+			if (!panel) return;
+			const usuario = usuarioSesion();
+			try {
+				if (usuario?.rol === 'estudiante') mostrarPanel(panel);
+				else if (usuario?.rol === 'profesor') mostrarPanelProfesor(panel);
+				else if (esRolAdministrativo(usuario?.rol)) mostrarPanelAdmin(panel);
+				actualizarNavegacionSuperior(panel);
+			} catch (_) {}
+		}
+
+		function buscarEnClassPoint(consulta) {
+			const original = String(consulta || '').trim();
+			const q = normalizarTexto(original);
+			const usuario = usuarioSesion();
+			if (!q || !usuario) return {texto:'Escribe algo para buscar.', resultados:[]};
+
+			// Atajos semánticos para que "mis tareas", "mis insignias", etc. funcionen.
+			if (/\b(mis|misas)\s+tareas?\b/.test(q) || /\btareas?\s+(pendientes?|por hacer)\b/.test(q)) {
+				const lista = tareas.filter(t => t.usuario === usuario.usuario && perteneceInstitucion(t));
+				return {texto: lista.length ? `Tienes ${lista.length} tarea(s):\n${lista.slice(0,6).map(t => `• ${t.titulo} — ${t.fecha} — ${t.estado}`).join('\n')}` : 'No tienes tareas registradas.', resultados: lista.slice(0,6).map(t=>({tipo:'Tarea',titulo:t.titulo,detalle:`Entrega: ${t.fecha}`,panel:'tareasPanel'}))};
+			}
+			if (/\b(mis|misas)\s+insignias?\b/.test(q) || q.includes('que insignias') || q.includes('qué insignias')) {
+				const ins = obtenerInsigniasAsistente(usuario);
+				const siguientes = ins.filter(i=>!i[2]);
+				return {texto:`Tienes ${ins.filter(i=>i[2]).length} de ${ins.length} insignias desbloqueadas.\n${siguientes.length ? 'Siguientes:\n'+siguientes.slice(0,4).map(i=>`• ${i[0]} — ${i[1]}`).join('\n') : '¡Ya desbloqueaste todas!'}`,resultados:[]};
+			}
+			if (/\b(mis|mi)\s+(aulas?|clases?)\b/.test(q)) {
+				const lista = aulas.filter(a => perteneceInstitucion(a) && (usuario.rol !== 'estudiante' || a.estudiantes.includes(usuario.usuario)));
+				return {texto:lista.length ? `Encontré ${lista.length} aula(s):\n${lista.slice(0,6).map(a=>`• ${a.nombre} — ${a.horario} — ${a.codigo}`).join('\n')}` : 'No encontré aulas asociadas.',resultados:lista.slice(0,6).map(a=>({tipo:'Aula',titulo:a.nombre,detalle:`${a.horario} · ${a.codigo}`,panel:'aulasPanel'}))};
+			}
+
+			const resultados = [];
+			const agregar = (tipo,titulo,detalle,panel) => resultados.push({tipo,titulo,detalle,panel});
+
+			tareas.filter(t => perteneceInstitucion(t) && (usuario.rol !== 'estudiante' || t.usuario === usuario.usuario)).forEach(t => {
+				if (normalizarTexto(`${t.titulo} ${t.descripcion} ${t.fecha} ${t.estado}`).includes(q))
+					agregar('Tarea',t.titulo,`${t.descripcion} · ${t.fecha} · ${t.estado}`,'tareasPanel');
+			});
+			materias.filter(m=>perteneceInstitucion(m)).forEach(m=>{
+				if(normalizarTexto(`${m.nombre} ${m.profesor}`).includes(q))
+					agregar('Materia',m.nombre,`Profesor: ${usuarios.find(u=>u.usuario===m.profesor)?.nombre || m.profesor}`,'materiasPanel');
+			});
+			aulas.filter(a=>perteneceInstitucion(a)).forEach(a=>{
+				if(normalizarTexto(`${a.nombre} ${a.horario} ${a.codigo}`).includes(q))
+					agregar('Aula',a.nombre,`${a.horario} · Código: ${a.codigo}`,'aulasPanel');
+			});
+			usuariosVisibles().filter(u=>u.rol==='estudiante'||u.rol==='profesor').forEach(u=>{
+				if(normalizarTexto(`${u.nombre} ${u.usuario}`).includes(q))
+					agregar(u.rol==='estudiante'?'Estudiante':'Profesor',u.nombre,`Usuario: ${u.usuario}`,u.rol==='estudiante'?'profesorInicio':'profesorInicio');
+			});
+			if(usuario.rol==='estudiante') calificaciones.filter(n=>n.usuario===usuario.usuario&&perteneceInstitucion(n)).forEach(n=>{
+				if(normalizarTexto(`${n.materia} ${n.nota}`).includes(q)) agregar('Calificación',n.materia,`Nota: ${n.nota}`,'materiasPanel');
+			});
+
+			const unique = [...new Map(resultados.map(r=>[`${r.tipo}-${r.titulo}-${r.detalle}`,r])).values()];
+			if(!unique.length) return {texto:`No encontré resultados para "${original}". Prueba con el nombre de una tarea, materia, aula, persona o código.`,resultados:[]};
+			return {texto:`Encontré ${unique.length} resultado(s) para "${original}".`,resultados:unique.slice(0,6)};
+		}
+
+		function responderAsistente(pregunta) {
+			const texto = normalizarTexto(pregunta);
+			const usuario = usuarioSesion();
+			if (!usuario) return {texto:'Primero inicia sesión para que pueda darte información personalizada.',resultados:[]};
+
+			if (/^(hola|holi|hey|buenas|buenos dias|buenas tardes|buenas noches)\b/.test(texto))
+				return {texto:`¡Hola, ${usuario.nombre}! 👋 Soy el Asistente ClassPoint. ¿Qué necesitas consultar?`,resultados:[]};
+
+			const esBusqueda = /buscar|busca|encuentra|encontrar|donde esta|dónde está|muéstrame|mostrar|localiza|localizar/.test(texto);
+			if(esBusqueda){
+				const consulta=texto.replace(/buscar|busca|encuentra|encontrar|donde esta|dónde está|muéstrame|mostrar|localiza|localizar/g,'').trim();
+				return consulta ? buscarEnClassPoint(consulta) : {texto:'Escribe qué quieres buscar. Ejemplo: "buscar ensayo de ciencias".',resultados:[]};
+			}
+
+			if(texto.includes('insignia')||texto.includes('logro')) {
+				if(usuario.rol!=='estudiante') return {texto:'Las insignias reconocen principalmente el progreso de los estudiantes.',resultados:[]};
+				const ins=obtenerInsigniasAsistente(usuario), ok=ins.filter(i=>i[2]).length, next=ins.filter(i=>!i[2]).slice(0,4);
+				return {texto:`Tienes ${ok} de ${ins.length} insignias desbloqueadas.${next.length?'\n\nPuedes conseguir:\n'+next.map(i=>`• ${i[0]} — ${i[1]}`).join('\n'):'\n\n¡Ya desbloqueaste todas!'}`,resultados:[]};
+			}
+
+			if(texto.includes('promedio')||texto.includes('nota')||texto.includes('calificacion')||texto.includes('calificación')){
+				if(usuario.rol==='estudiante'){
+					const notas=calificaciones.filter(n=>n.usuario===usuario.usuario&&perteneceInstitucion(n));
+					if(!notas.length)return {texto:'Todavía no tienes calificaciones registradas.',resultados:[]};
+					const promedio=(notas.reduce((s,n)=>s+Number(n.nota||0),0)/notas.length).toFixed(2);
+					return {texto:`Tu promedio actual es ${promedio}. Tienes ${notas.length} calificación(es) registrada(s).`,resultados:[]};
+				}
+				return {texto:usuario.rol==='profesor'?'Puedes gestionar las calificaciones desde tu panel de profesor.':'Puedes consultar la información académica desde los paneles administrativos.',resultados:[]};
+			}
+
+			if(texto.includes('tarea')||texto.includes('pendiente')) return buscarEnClassPoint('mis tareas');
+			if(texto.includes('coin')||texto.includes('moneda')||texto.includes('mercado')||texto.includes('compr')) return {texto:usuario.rol==='profesor'?'En ClassCoins puedes seleccionar un estudiante, una materia y entregar monedas.':'En Mercado puedes consultar las recompensas disponibles y tus ClassCoins.',resultados:[]};
+			if(texto.includes('aula')||texto.includes('codigo')||texto.includes('código')) return buscarEnClassPoint('mis aulas');
+			if(texto.includes('perfil')||texto.includes('foto')) return {texto:'En Perfil puedes actualizar tu información, foto y contraseña.',resultados:[]};
+			if(texto.includes('ayuda')||texto.includes('que puedes')||texto.includes('qué puedes'))
+				return {texto:'Puedo ayudarte con:\n• Buscar tareas, materias, aulas y personas.\n• Consultar tu promedio y tareas.\n• Revisar insignias y ClassCoins.\n• Llevarte directamente a una sección de ClassPoint.',resultados:[]};
+
+			return {texto:'No estoy seguro de lo que necesitas. Prueba "¿cuál es mi promedio?", "mis tareas", "mis insignias" o "buscar aula 101".',resultados:[]};
+		}
+
+		function agregarMensajeAsistente(texto, esUsuario=false, resultados=[]) {
+			const mensajes=$('aiAssistantMessages');
+			const mensaje=document.createElement('div');
+			mensaje.className=`ai-message${esUsuario?' user':''}`;
+			mensaje.textContent=texto;
+			mensajes.appendChild(mensaje);
+			if(!esUsuario && resultados.length){
+				resultados.forEach(r=>{
+					const box=document.createElement('div'); box.className='ai-result-actions';
+					const b=document.createElement('button'); b.type='button'; b.className='secondary'; b.textContent=`Abrir ${r.tipo}`;
+					b.onclick=()=>asistenteIrA(r.panel);
+					box.appendChild(b); mensaje.appendChild(box);
+				});
+			}
+			mensajes.scrollTop=mensajes.scrollHeight;
+		}
+
+		$('aiAssistantToggle').addEventListener('click',()=> $('aiAssistantBody').classList.toggle('hidden'));
+		document.querySelectorAll('.assistant-suggestion').forEach(boton=>boton.addEventListener('click',()=>{
+			const pregunta=boton.dataset.question||''; $('aiAssistantInput').value=pregunta; $('aiAssistantInput').focus();
+		}));
+		$('aiAssistantForm').addEventListener('submit',e=>{
+			e.preventDefault();
+			const entrada=$('aiAssistantInput'), pregunta=entrada.value.trim();
+			if(!pregunta)return;
+			agregarMensajeAsistente(pregunta,true);
+			const respuesta=responderAsistente(pregunta);
+			agregarMensajeAsistente(respuesta.texto,false,respuesta.resultados||[]);
+			entrada.value='';
+		});
+
 			function generarCodigoAula() { return `CP-${Math.random().toString(36).slice(2, 6).toUpperCase()}-${Math.floor(Math.random() * 90 + 10)}`; }
 				function usuarioSesion() { return usuarios.find(u => u.usuario === sessionStorage.getItem('usuario')); }
 				function esCreadorOriginal() { return usuarioSesion()?.rol === 'creadorOriginal'; }
@@ -952,6 +1722,7 @@
 				$('listaMateriasAdmin').innerHTML = materias.filter(perteneceInstitucion).length ? materias.filter(perteneceInstitucion).map(materia => `<div class="list-item"><strong>${materia.nombre}</strong><small>Profesor: ${usuarios.find(u => u.usuario === materia.profesor)?.nombre || materia.profesor}</small><br><button type="button" class="editar-materia" data-id="${materia.id}">Modificar</button><button type="button" class="secondary eliminar-materia" data-id="${materia.id}">Eliminar</button></div>`).join('') : '<p>No hay materias registradas.</p>';
 			}
 		function mostrar(id) {
+			mostrarHerramientasRapidas(id !== 'login');
 			const enApp = id !== 'login';
 			const header = document.querySelector('.site-header');
 			const main = document.querySelector('main');
@@ -1051,8 +1822,38 @@
 				}));
 			}
 			function renderLogrosEstudiante(usuario) {
-				const lista = logros.filter(item => item.usuario === usuario.usuario);
-				$('listaLogrosEstudiante').innerHTML = lista.length ? lista.map(item => `<div class="list-item"><strong>${item.titulo}</strong><small>${item.detalle}</small><span class="status-badge">Logro desbloqueado</span></div>`).join('') : '<p>Aún no tienes logros desbloqueados.</p>';
+				const usuarioId = usuario.usuario;
+				const tareasUsuario = tareas.filter(item => item.usuario === usuarioId);
+				const tareasCompletadas = tareasUsuario.filter(item => item.estado === 'completada').length;
+				const notasUsuario = calificaciones.filter(item => item.usuario === usuarioId);
+				const promedio = notasUsuario.length ? notasUsuario.reduce((suma, item) => suma + Number(item.nota || 0), 0) / notasUsuario.length : 0;
+				const registrosAsistencia = asistencia.filter(item => item.usuario === usuarioId);
+				const porcentajeAsistencia = calcularAsistencia(usuarioId);
+				const evidenciasUsuario = evidencias.filter(item => item.usuario === usuarioId);
+				const evidenciasAprobadas = evidenciasUsuario.filter(item => item.estado === 'Aprobada').length;
+
+				const insignias = [
+					{ id:'primera-entrega', icono:'🚀', nombre:'Primera entrega', requisito:'Completa tu primera tarea.', desbloqueada:tareasCompletadas >= 1 },
+					{ id:'tres-tareas', icono:'📚', nombre:'Constancia', requisito:'Completa 3 tareas.', desbloqueada:tareasCompletadas >= 3 },
+					{ id:'buen-promedio', icono:'⭐', nombre:'Excelencia académica', requisito:'Ten un promedio de 4.5 o más con al menos 3 calificaciones.', desbloqueada:notasUsuario.length >= 3 && promedio >= 4.5 },
+					{ id:'asistencia', icono:'🗓️', nombre:'Siempre presente', requisito:'Alcanza 90% o más de asistencia con al menos 5 registros.', desbloqueada:registrosAsistencia.length >= 5 && porcentajeAsistencia >= 90 },
+					{ id:'evidencia', icono:'📎', nombre:'Manos a la obra', requisito:'Sube tu primera evidencia.', desbloqueada:evidenciasUsuario.length >= 1 },
+					{ id:'evidencia-aprobada', icono:'🏅', nombre:'Trabajo destacado', requisito:'Consigue 3 evidencias aprobadas por un docente.', desbloqueada:evidenciasAprobadas >= 3 }
+				];
+
+				$('listaInsigniasEstudiante').innerHTML = insignias.map(insignia => `
+					<article class="insignia-card ${insignia.desbloqueada ? 'desbloqueada' : 'bloqueada'}">
+						<div class="insignia-icono">${insignia.desbloqueada ? insignia.icono : '🔒'}</div>
+						<h4>${insignia.nombre}</h4>
+						<p class="insignia-requisito"><strong>¿Cómo ganarla?</strong> ${insignia.requisito}</p>
+						<span class="insignia-estado">${insignia.desbloqueada ? '✓ Desbloqueada' : '🔒 Bloqueada'}</span>
+					</article>
+				`).join('');
+
+				const lista = logros.filter(item => item.usuario === usuarioId);
+				$('listaLogrosEstudiante').innerHTML = lista.length
+					? lista.map(item => `<div class="list-item"><strong>${item.titulo}</strong><small>${item.detalle}</small><span class="status-badge">Logro desbloqueado</span></div>`).join('')
+					: '<p>Aún no tienes logros registrados. ¡Empieza completando una tarea!</p>';
 			}
 			function renderTareasProfesor() {
 				const tareasVisibles = tareas.filter(perteneceInstitucion); $('listaTareasProfesor').innerHTML = tareasVisibles.length ? tareasVisibles.map(tarea => `<div class="list-item"><strong>${tarea.titulo}</strong><small>${usuarios.find(u => u.usuario === tarea.usuario)?.nombre || tarea.usuario} · ${tarea.fecha}</small><p>${tarea.descripcion}</p><span class="pill ${tarea.estado === 'pendiente' ? 'warn' : ''}">${tarea.estado === 'pendiente' ? 'Pendiente' : 'Entregada'}</span></div>`).join('') : '<p>No hay tareas creadas.</p>';
@@ -1130,6 +1931,24 @@
 			document.querySelectorAll('.comprar').forEach(boton => { const producto = productos.find(item => item.id === boton.dataset.item); boton.disabled = (monedas[user.usuario][materia] || 0) < producto.precio; boton.onclick = () => comprarProducto(user, producto, materia); });
 		}
 		function comprarProducto(user, producto, materia) { if (!user || user.rol !== 'estudiante' || !producto || !perteneceInstitucion(producto)) return $('tiendaMensaje').textContent = 'Solo los estudiantes pueden comprar recompensas de su institución.'; if ((monedas[user.usuario][materia] || 0) < producto.precio) return $('tiendaMensaje').textContent = 'Necesitas más ClassCoins en esta materia.'; monedas[user.usuario][materia] -= producto.precio; compras[user.usuario][`${materia}-${producto.id}`] = (compras[user.usuario][`${materia}-${producto.id}`] || 0) + 1; guardarEconomia(); $('tiendaMensaje').textContent = `Compra realizada: ${producto.nombre}.`; renderTienda({ ...user, materia }); }
+        function renderChismografo() {
+            const usuario = usuarioSesion();
+            const institucion = institucionSesion();
+            const companeros = usuariosVisibles().filter(item => item.rol === 'estudiante' && item.usuario !== usuario?.usuario);
+            $('chismografoConQuien').innerHTML = '<option value="">Selecciona un compañero o compañera</option>' + companeros.map(item => `<option value="${escapeHtml(item.usuario)}">${escapeHtml(item.nombre)}</option>`).join('');
+            const publicaciones = JSON.parse(localStorage.getItem('chismografo') || '[]')
+                .filter(item => item.institucion === institucion)
+                .sort((a,b) => b.fecha - a.fecha);
+            $('listaChismografo').innerHTML = publicaciones.length ? publicaciones.map(item => `
+                <article class="list-item">
+                    <strong>${escapeHtml(item.autor)} → ${escapeHtml(item.destinatario || 'el salón')} <span class="status-badge">${escapeHtml(item.fechaTexto)}</span></strong>
+                    <p>${escapeHtml(item.texto)}</p>
+                </article>`).join('') : '<p>Aún no hay publicaciones. ¡Sé el primero en compartir algo!</p>';
+        }
+        function escapeHtml(text) {
+            return String(text).replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
+        }
+
 		function mostrarPanel(id) { document.querySelectorAll('#estudiante .panel').forEach(panel => panel.classList.toggle('activo', panel.id === id)); document.querySelectorAll('.barra button').forEach(boton => boton.classList.toggle('activo', boton.dataset.panel === id)); }
 		function totalMonedas(usuario) { return Object.values(monedas[usuario] || {}).reduce((total, saldo) => total + Number(saldo || 0), 0); }
 		function renderRanking() { const ranking = usuariosVisibles().filter(u => u.rol === 'estudiante').sort((a, b) => totalMonedas(b.usuario) - totalMonedas(a.usuario)); $('ranking').innerHTML = ranking.map((u, i) => `<tr><td>${i + 1}</td><td>${u.nombre}</td><td class="nota">${totalMonedas(u.usuario)}</td></tr>`).join(''); }
@@ -1142,10 +1961,42 @@
 			document.querySelectorAll('#listaProfesoresAdmin .quitar-profesor').forEach(boton => boton.onclick = () => quitarProfesor(boton.dataset.usuario));
 		}
 		function renderInstituciones() {
-			$('listaInstituciones').innerHTML = instituciones.map(institucion => { const miembros = usuarios.filter(usuario => usuario.institucion === institucion.nombre); const detalle = esCreadorOriginal() ? `<div class="institucion-miembros">${miembros.length ? miembros.map(miembro => `<div class="institucion-miembro">${avatarHTML(miembro)} <span><strong>${miembro.nombre}</strong><small>${miembro.rol === 'creadorOriginal' ? 'Creador original' : miembro.rol === 'administrador' ? 'Administrador institucional' : miembro.rol === 'profesor' ? 'Profesor' : 'Estudiante'}</small></span>${miembro.rol === 'administrador' ? `<button type="button" class="secondary quitar-administrador" data-usuario="${miembro.usuario}">Quitar administrador</button>` : ''}</div>`).join('') : '<small>No hay cuentas asociadas.</small>'}</div>` : ''; return `<div class="list-item"><strong>${institucion.nombre}</strong><small>${miembros.length} cuenta(s)</small><br><button type="button" class="editar-institucion" data-id="${institucion.id}">Modificar</button><button type="button" class="secondary eliminar-institucion" data-id="${institucion.id}">Eliminar</button>${detalle}</div>`; }).join('');
+			$('listaInstituciones').innerHTML = instituciones.map(institucion => {
+				const miembros = usuarios.filter(usuario => usuario.institucion === institucion.nombre);
+				const detalle = esCreadorOriginal() ? `<div class="institucion-miembros">${miembros.length ? miembros.map(miembro => {
+					const rolTexto = miembro.rol === 'creadorOriginal' ? 'Creador original' : miembro.rol === 'administrador' ? 'Administrador institucional' : miembro.rol === 'profesor' ? 'Profesor' : 'Estudiante';
+					const puedeQuitar = miembro.rol !== 'creadorOriginal';
+					return `<div class="institucion-miembro">${avatarHTML(miembro)} <span><strong>${miembro.nombre}</strong><small>${rolTexto}</small></span>${puedeQuitar ? `<button type="button" class="secondary quitar-institucion" data-usuario="${miembro.usuario}" data-institucion="${institucion.id}">Quitar de esta institución</button>` : ''}</div>`;
+				}).join('') : '<small>No hay cuentas asociadas.</small>'}</div>` : '';
+				return `<div class="list-item"><strong>${institucion.nombre}</strong><small>${miembros.length} cuenta(s)</small><br><button type="button" class="editar-institucion" data-id="${institucion.id}">Modificar</button><button type="button" class="secondary eliminar-institucion" data-id="${institucion.id}">Eliminar</button>${detalle}</div>`;
+			}).join('');
 			document.querySelectorAll('.editar-institucion').forEach(boton => boton.onclick = () => editarInstitucion(boton.dataset.id));
 			document.querySelectorAll('.eliminar-institucion').forEach(boton => boton.onclick = () => eliminarInstitucion(boton.dataset.id));
-			document.querySelectorAll('.quitar-administrador').forEach(boton => boton.onclick = () => quitarAdministradorInstitucional(boton.dataset.usuario));
+			document.querySelectorAll('.quitar-institucion').forEach(boton => boton.onclick = () => quitarDeInstitucion(boton.dataset.usuario, boton.dataset.institucion));
+		}
+
+		function guardarUsuariosExtra() {
+			localStorage.setItem('estudiantesExtra', JSON.stringify(usuarios.filter(usuario => usuario.rol === 'estudiante' && !['ana','luis'].includes(usuario.usuario))));
+			localStorage.setItem('profesoresExtra', JSON.stringify(usuarios.filter(usuario => usuario.rol === 'profesor' && usuario.usuario !== 'profesor')));
+			localStorage.setItem('administradoresExtra', JSON.stringify(usuarios.filter(usuario => usuario.rol === 'administrador')));
+			const institucionesUsuarios = {};
+			usuarios.forEach(usuario => institucionesUsuarios[usuario.usuario] = usuario.institucion || '');
+			localStorage.setItem('institucionesUsuarios', JSON.stringify(institucionesUsuarios));
+		}
+
+		function quitarDeInstitucion(usuario, institucionId) {
+			if (!esCreadorOriginal()) return;
+			const miembro = usuarios.find(item => item.usuario === usuario);
+			const institucion = instituciones.find(item => item.id === institucionId);
+			if (!miembro || miembro.rol === 'creadorOriginal' || !institucion || miembro.institucion !== institucion.nombre) return;
+			if (!confirm(`¿Quitar a ${miembro.nombre} de ${institucion.nombre}? Su cuenta no será eliminada.`)) return;
+			miembro.institucion = '';
+			miembro.requiereInstitucion = true;
+			guardarUsuariosExtra();
+			renderInstituciones();
+			renderPersonasAdmin();
+			renderResumenAdmin();
+			$('institucionMensaje').textContent = `${miembro.nombre} fue quitado de ${institucion.nombre}. Su cuenta sigue existiendo y podrá entrar a otra institución.`;
 		}
 		function quitarAdministradorInstitucional(usuario) {
 			if (!esCreadorOriginal()) return;
@@ -1320,6 +2171,21 @@
 			$('asistenciaForm').addEventListener('submit', e => { e.preventDefault(); const usuario = $('asistenciaEstudiante').value; const fecha = $('asistenciaFecha').value; const estado = $('asistenciaEstado').value; asistencia.push({ usuario, fecha, estado, institucion:institucionDeUsuario(usuario) }); guardarAsistencia(); $('asistenciaMensaje').textContent = 'Asistencia guardada.'; $('asistenciaForm').reset(); renderAsistenciaProfesor(); });
 		$('monedasForm').addEventListener('submit', e => { e.preventDefault(); const usuario = $('alumnoMonedas').value; const materia = $('materiaMonedas').value; const cantidad = Number($('cantidadMonedas').value); if (!usuario || !materia || !Number.isInteger(cantidad) || cantidad < 1) return $('monedasMensaje').textContent = 'Selecciona un estudiante, una materia y una cantidad válida.'; const estudiante = usuariosVisibles().find(item => item.usuario === usuario && item.rol === 'estudiante'); if (!estudiante) return $('monedasMensaje').textContent = 'Ese estudiante no pertenece a tu institución.'; monedas[usuario] = monedas[usuario] || {}; monedas[usuario][materia] = (monedas[usuario][materia] || 0) + cantidad; guardarEconomia(); $('monedasMensaje').textContent = `Se entregaron ${cantidad} ClassCoins a ${estudiante.nombre} en ${materia}.`; $('cantidadMonedas').value = ''; renderRankingProfesor(); });
 		$('productoForm').addEventListener('submit', e => { e.preventDefault(); const nombre = $('productoNombre').value.trim(); const descripcion = $('productoDescripcion').value.trim(); const precio = Number($('productoPrecio').value); if (!nombre || !descripcion || !Number.isInteger(precio) || precio < 1) return; productos.push({ id:`producto-${Date.now()}`, nombre, descripcion, precio, institucion:institucionSesion() }); guardarProductos(); renderProductosProfesor(); $('productoMensaje').textContent = 'Recompensa añadida al mercado.'; $('productoNombre').value = ''; $('productoDescripcion').value = ''; $('productoPrecio').value = ''; });
+        $('chismografoForm').addEventListener('submit', e => {
+            e.preventDefault();
+            const conQuien = $('chismografoConQuien').value;
+            const texto = $('chismografoTexto').value.trim();
+            const usuario = usuarioSesion();
+            const destinatario = usuarios.find(item => item.usuario === conQuien);
+            if (!conQuien || !texto || !usuario || !destinatario) return;
+            const publicaciones = JSON.parse(localStorage.getItem('chismografo') || '[]');
+            publicaciones.push({ id: Date.now(), texto, autor: usuario.nombre || usuario.usuario, destinatario: destinatario.nombre || destinatario.usuario, destinatarioUsuario: conQuien, institucion: institucionSesion(), fecha: Date.now(), fechaTexto: new Date().toLocaleString('es-ES') });
+            localStorage.setItem('chismografo', JSON.stringify(publicaciones));
+            $('chismografoForm').reset();
+            $('chismografoMensaje').textContent = '¡Publicado en El Chismógrafo!';
+            renderChismografo();
+        });
+        
 		document.querySelectorAll('#estudiante .barra button').forEach(boton => boton.addEventListener('click', () => { mostrarPanel(boton.dataset.panel); if (boton.dataset.panel === 'rankingPanel') renderRanking(); }));
 		$('contrasenaForm').addEventListener('submit', e => { e.preventDefault(); const usuario = sessionStorage.getItem('usuario'); const nueva = $('nuevaContrasena').value; localStorage.setItem(`clave-${usuario}`, nueva); const user = usuarios.find(u => u.usuario === usuario); user.clave = nueva; $('contrasenaMensaje').textContent = 'Contraseña actualizada.'; $('nuevaContrasena').value = ''; });
 		$('perfilDatosEstudianteForm').addEventListener('submit', e => { e.preventDefault(); guardarDatosPerfil(usuarioSesion(), { tardes:'perfilTardesEstudiante', intereses:'perfilInteresesEstudiante', descripcion:'perfilDescripcionEstudiante' }, 'perfilDatosEstudianteMensaje'); });
@@ -1337,7 +2203,7 @@
 			if (panel === 'notificacionesPanel') panel = usuario.rol === 'profesor' ? 'profesorNotificaciones' : esRolAdministrativo(usuario.rol) ? 'adminNotificaciones' : 'notificacionesPanel';
 			if (esRolAdministrativo(usuario.rol)) { mostrarPanelAdmin(panel); if (panel === 'adminPerfil') { renderAvatarPerfil('perfilAvatarAdmin', usuario); cargarDatosPerfil(usuario, { tardes:'perfilTardesAdmin', intereses:'perfilInteresesAdmin', descripcion:'perfilDescripcionAdmin' }); } }
 			else if (usuario.rol === 'profesor') { mostrarPanelProfesor(panel); if (panel === 'profesorRanking') renderRankingProfesor(); }
-			else { mostrarPanel(panel); if (panel === 'rankingPanel') renderRanking(); }
+			else { mostrarPanel(panel); if (panel === 'rankingPanel') renderRanking(); if (panel === 'chismografoPanel') renderChismografo(); }
 			actualizarNavegacionSuperior(panel);
 		}));
 		$('profesorForm').addEventListener('submit', e => { e.preventDefault(); const usuario = $('nuevoProfesorUsuario').value.trim().toLowerCase(); const nombre = $('nuevoProfesorNombre').value.trim(); const clave = $('nuevaClaveProfesor').value; if (usuarios.some(u => u.usuario === usuario)) return $('profesorMensaje').textContent = 'Ese usuario ya existe.'; const profesor = { usuario, clave, nombre, rol:'profesor', institucion:institucionSesion() }; usuarios.push(profesor); const profesores = JSON.parse(localStorage.getItem('profesoresExtra') || '[]'); profesores.push(profesor); localStorage.setItem('profesoresExtra', JSON.stringify(profesores)); $('profesorMensaje').textContent = `${nombre} fue añadido como profesor.`; $('profesorForm').reset(); });
